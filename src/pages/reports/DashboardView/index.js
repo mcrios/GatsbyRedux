@@ -6,9 +6,9 @@ import {
 } from '@material-ui/core'
 import Page from '../../../component/Page'
 import Budget from '../Budget';
-import { useDispatch, useSelector } from 'react-redux';
-import { cargarUsuarios } from '../../../redux/usuarioReducer';
-import TableUsers from '../TableUsers';
+import { useDispatch, useSelector } from 'react-redux'
+import TableUsers from '../TableUsers'
+import { cargarEstados } from '../../../redux/serverReducer'
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -21,10 +21,10 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
   const dispatch = useDispatch()
-  const data = useSelector(store => store.usuario.usuarios)
+  const data = useSelector(store => store.server.data)
 
   useEffect(() => {
-    dispatch(cargarUsuarios())
+    dispatch(cargarEstados())
   }, [])
 
   return (
@@ -80,7 +80,7 @@ const Dashboard = () => {
             xl={9}
             xs={12}
           >
-            <TableUsers users={data} />
+            <TableUsers data={data} />
           </Grid>
         </Grid>
       </Container>

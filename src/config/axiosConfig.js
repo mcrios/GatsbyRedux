@@ -4,7 +4,7 @@ let instance = null
 if (process.env.NODE_ENV === 'development') {
     //Pruebas
     instance = Axios.create({
-        baseURL: 'http://localhost:8080/'
+        baseURL: 'http://172.17.81.22:8080/'
     })
 } else {
     //Produccion

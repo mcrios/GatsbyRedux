@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react'
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -11,9 +11,9 @@ import {
   colors,
   makeStyles
 } from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import { useDispatch, useSelector } from 'react-redux';
-import { contarUsuarios } from '../../redux/usuarioReducer';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+// import { useDispatch, useSelector } from 'react-redux'
+// import { contarUsuarios } from '../../redux/usuarioReducer'
 import { User } from 'react-feather';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,17 +36,17 @@ const useStyles = makeStyles((theme) => ({
 
 const Budget = ({ className, ...rest }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  const conteo = useSelector(store => store.usuario.contador)
+  // const dispatch = useDispatch()
+  // const conteo = useSelector(store => store.usuario.contador)
 
-  useEffect(()=>{
-    dispatch(contarUsuarios())
+  // useEffect(()=>{
+  //   dispatch(contarUsuarios())
 
-    let id = setInterval(() => {
-      dispatch(contarUsuarios())
-    }, 5000)
-    return () => clearInterval(id)
-  }, [])
+  //   let id = setInterval(() => {
+  //     dispatch(contarUsuarios())
+  //   }, 5000)
+  //   return () => clearInterval(id)
+  // }, [])
 
   return (
     <Card
@@ -71,7 +71,7 @@ const Budget = ({ className, ...rest }) => {
               color="textPrimary"
               variant="h3"
             >
-              {conteo}
+              5
             </Typography>
           </Grid>
           <Grid item>

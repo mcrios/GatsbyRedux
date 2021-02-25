@@ -5,10 +5,10 @@ import Dashboard from "./reports/DashboardView"
 
 const HomePage = () => {
 
-    useEffect(() => {
-        if (typeof window !== `undefined` && typeof localStorage.getItem('token') === `undefined`)
-            navigate('/')
-    }, [])
+    // useEffect(() => {
+    //     if (typeof window !== `undefined` && typeof localStorage.getItem('token') === `undefined`)
+    //         navigate('/')
+    // }, [])
 
     return (
         <div style={{ backgroundColor: '#f4f6f8' }}>

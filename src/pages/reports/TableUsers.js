@@ -28,6 +28,7 @@ import {
 
 import {
   Edit,
+  Mail,
   UserMinus,
   UserPlus
 } from 'react-feather'
@@ -36,20 +37,20 @@ import { actualizarUsuario, agregarUsuario, configurarUsuario, eliminarUsuario }
 import * as Yup from 'yup';
 import { Formik } from 'formik'
 
-const TableUsers = ({ users }) => {
+const TableUsers = ({ data }) => {
   const [open, setOpen] = useState(false)
   const [openAdd, setOpenAdd] = useState(false)
   const dispatch = useDispatch()
   const usuario = useSelector(store => store.usuario.usuarioConfig)
-
+   
   return (
     <Card>
-      <CardHeader title="Usuarios Activos"
+      <CardHeader title="Estado Servidores"
         action={
           <IconButton variant="contained" color="primary" onClick={() => {
             setOpenAdd(true)
           }}>
-            <UserPlus />
+            <Mail />
           </IconButton>
         }
       />
@@ -59,61 +60,56 @@ const TableUsers = ({ users }) => {
           <TableHead>
             <TableRow>
               <TableCell>
-                Id
+                SERVER
               </TableCell>
               <TableCell>
-                Nombre
+                AVAIL
               </TableCell>
-              <TableCell sortDirection="desc">
-                <Tooltip
-                  enterDelay={300}
-                  title="Sort"
-                >
-                  <TableSortLabel
-                    active
-                    direction="desc"
-                  >
-                    Correo
-                  </TableSortLabel>
-                </Tooltip>
+              <TableCell >
+                FILESYSTEM
               </TableCell>
               <TableCell>
-                Estado
+                SIZE
               </TableCell>
               <TableCell>
-                Genero
+                USED
               </TableCell>
               <TableCell>
-                Acciones
+                URL
+              </TableCell>
+              <TableCell>
+                % USE
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {Object.keys(data).map((key) => (
               <TableRow
                 hover
-                key={user.id}
+                key={key}
               >
                 <TableCell>
-                  {user.id}
+                  {key}
                 </TableCell>
                 <TableCell>
-                  {user.nombre}
+                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["AVAIL"])/1024/1024/1024).toFixed(2) + " GB": ""}
                 </TableCell>
                 <TableCell>
-                  {user.correo}
+                  {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["FILESYSTEM"] : ""}
                 </TableCell>
                 <TableCell>
-                  <Chip
-                    color="primary"
-                    label={user.estado}
-                    size="small"
-                  />
+                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["SIZE"])/1024/1024/1024).toFixed(2) + " GB" : ""}
                 </TableCell>
                 <TableCell>
-                  {user.genero}
+                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["USED"])/1024/1024/1024).toFixed(2) + " GB" : ""}
                 </TableCell>
                 <TableCell>
+                  {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["URL"] : ""}
+                </TableCell>
+                <TableCell>
+                  {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["USE_PORC"] : "0"}
+                </TableCell>
+                {/* <TableCell>
                   <IconButton color="secondary" onClick={() => { 
                     dispatch(eliminarUsuario(user.id)) 
                   }}>
@@ -125,7 +121,7 @@ const TableUsers = ({ users }) => {
                   }}>
                     <Edit size="20" />
                   </IconButton>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
