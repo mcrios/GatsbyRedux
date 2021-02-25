@@ -9,6 +9,7 @@ import Budget from '../Budget';
 import { useDispatch, useSelector } from 'react-redux'
 import TableUsers from '../TableUsers'
 import { cargarEstados } from '../../../redux/serverReducer'
+import Chart from '../Chart';
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -72,6 +73,24 @@ const Dashboard = () => {
             xs={12}
           >
             <Budget />
+          </Grid>
+          <Grid
+            item
+            lg={6}
+            md={6}
+            xl={9}
+            xs={6}
+          >
+            <Chart db={data.DBPLANILLASV} />
+          </Grid>
+          <Grid
+            item
+            lg={6}
+            md={6}
+            xl={9}
+            xs={6}
+          >
+            <Chart db={data.DBPLANILLASV}/>
           </Grid>
           <Grid
             item
