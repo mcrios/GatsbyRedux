@@ -62,17 +62,23 @@ const Chart = ({ db, name, className, ...rest }) => {
         showInLegend: true
       }
     },
+    legend: {
+      labelFormatter: function () {
+        console.log(this);
+        return this.name + ': ' + this.y + ' GB';
+      }
+    },
     series: [{
       name: 'Almacenamiento',
       colorByPoint: true,
       data: [{
         name: 'Disponible',
-        color: '#DEE0FA',
-        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["AVAIL"]/1024/1024/1024).toFixed(2) : 0)
+        color: '#1D7BFA',
+        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["AVAIL"] / 1024 / 1024).toFixed(2) : 0)
       }, {
-        name: 'Usada',
+        name: 'Usado',
         color: '#FB306A',
-        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["USED"]/1024/1024/1024).toFixed(2) : 0)
+        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["USED"] / 1024 / 1024).toFixed(2) : 0)
       }]
     }]
   }
@@ -106,7 +112,7 @@ const Chart = ({ db, name, className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              Estado de memoria en BD: {name}
+              Estado de disco en: {name}
             </Typography>
           </Grid>
         </Grid>
@@ -116,7 +122,7 @@ const Chart = ({ db, name, className, ...rest }) => {
         </div>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" >Detalle</Button>
+        <Button size="small" color="primary" >Table Space</Button>
       </CardActions>
     </Card>
   );
