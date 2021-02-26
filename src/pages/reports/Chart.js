@@ -2,8 +2,6 @@ import React from 'react'
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
-  Avatar,
-  Box,
   Card,
   CardContent,
   Grid,
@@ -12,13 +10,9 @@ import {
   makeStyles,
   CardActions,
   Button
-} from '@material-ui/core';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
-// import { useDispatch, useSelector } from 'react-redux'
-// import { contarUsuarios } from '../../redux/usuarioReducer'
-import { User } from 'react-feather';
+} from '@material-ui/core'
 import HighchartsReact from 'highcharts-react-official'
-import Highcharts from 'highcharts'
+import HighchartsStockChart from 'highcharts'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,22 +32,51 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const options = {
-  chart: {
-    type: 'pie'
-  },
-  title: {
-    text: 'DBPLANILLASV'
-  },
-  series: [
-    {
-      data: [1, 2, 1, 4, 3, 6]
-    }
-  ]
-};
-
 const Chart = ({ db, name, className, ...rest }) => {
-  console.log(db);
+
+  const options = {
+    chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false,
+      type: 'pie'
+    },
+    title: {
+      text: name
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.y} GB</b>'
+    },
+    accessibility: {
+      point: {
+        valueSuffix: '%'
+      }
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: false
+        },
+        showInLegend: true
+      }
+    },
+    series: [{
+      name: 'Almacenamiento',
+      colorByPoint: true,
+      data: [{
+        name: 'Disponible',
+        color: '#DEE0FA',
+        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["AVAIL"]/1024/1024/1024).toFixed(2) : 0)
+      }, {
+        name: 'Usada',
+        color: '#FB306A',
+        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["USED"]/1024/1024/1024).toFixed(2) : 0)
+      }]
+    }]
+  }
+
   const classes = useStyles()
   // const dispatch = useDispatch()
   // const conteo = useSelector(store => store.usuario.contador)
@@ -83,14 +106,14 @@ const Chart = ({ db, name, className, ...rest }) => {
               gutterBottom
               variant="h6"
             >
-              GRAFICO MUESTRA
+              Estado de memoria en BD: {name}
             </Typography>
           </Grid>
         </Grid>
-        
-          <div>
-            <HighchartsReact highcharts={Highcharts} options={options}/>
-          </div>
+
+        <div>
+          <HighchartsReact highcharts={HighchartsStockChart} options={options} />
+        </div>
       </CardContent>
       <CardActions>
         <Button size="small" color="primary" >Detalle</Button>
