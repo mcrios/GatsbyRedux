@@ -1,5 +1,4 @@
-import { navigate } from "gatsby"
-import React, { useEffect } from "react"
+import React from "react"
 import DashboardLayout from '../layout/DashboardLayout'
 import Dashboard from "./reports/DashboardView"
 

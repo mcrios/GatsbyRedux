@@ -5,7 +5,6 @@ import {
   makeStyles
 } from '@material-ui/core'
 import Page from '../../../component/Page'
-import Budget from '../Budget';
 import { useDispatch, useSelector } from 'react-redux'
 import TableUsers from '../TableUsers'
 import { cargarEstados } from '../../../redux/serverReducer'
@@ -38,42 +37,17 @@ const Dashboard = () => {
           container
           spacing={3}
         >
-          <Grid
+          {Object.keys(data).map((db) => (
+            <Grid
             item
-            lg={3}
-            sm={6}
+            lg={4}
+            md={4}
             xl={3}
-            xs={12}
+            xs={4}
           >
-            <Budget />
+            <Chart db={data[db]} name={db}/>
           </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <Budget />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <Budget />
-          </Grid>
-          <Grid
-            item
-            lg={3}
-            sm={6}
-            xl={3}
-            xs={12}
-          >
-            <Budget />
-          </Grid>
+          ))}
           <Grid
             item
             lg={6}
@@ -81,16 +55,7 @@ const Dashboard = () => {
             xl={9}
             xs={6}
           >
-            <Chart db={data.DBPLANILLASV} />
-          </Grid>
-          <Grid
-            item
-            lg={6}
-            md={6}
-            xl={9}
-            xs={6}
-          >
-            <Chart db={data.DBPLANILLASV}/>
+            <Chart db={data.DBPLANILLASV} name={Object.keys(data)[1]}/>
           </Grid>
           <Grid
             item

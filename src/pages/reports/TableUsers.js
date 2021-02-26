@@ -4,7 +4,6 @@ import {
   Button,
   Card,
   CardHeader,
-  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -20,20 +19,15 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  TableSortLabel,
   TextField,
-  Tooltip,
   Typography,
 } from '@material-ui/core'
 
 import {
-  Edit,
-  Mail,
-  UserMinus,
-  UserPlus
+  Mail
 } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
-import { actualizarUsuario, agregarUsuario, configurarUsuario, eliminarUsuario } from '../../redux/usuarioReducer'
+import { actualizarUsuario, agregarUsuario} from '../../redux/usuarioReducer'
 import * as Yup from 'yup';
 import { Formik } from 'formik'
 
