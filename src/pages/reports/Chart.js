@@ -1,6 +1,6 @@
-import React from 'react'
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import clsx from "clsx";
+import PropTypes from "prop-types";
 import {
   Card,
   CardContent,
@@ -9,27 +9,51 @@ import {
   colors,
   makeStyles,
   CardActions,
-  Button
+  Button,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  Modal,
+  TableBody
 } from '@material-ui/core'
 import HighchartsReact from 'highcharts-react-official'
 import HighchartsStockChart from 'highcharts'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '100%'
+    height: "100%",
   },
   avatar: {
     backgroundColor: colors.blue[600],
     height: 56,
-    width: 56
+    width: 56,
   },
   differenceIcon: {
-    color: colors.blue[600]
+    color: colors.blue[600],
   },
   differenceValue: {
     color: colors.blue[800],
-    marginRight: theme.spacing(1)
-  }
+    marginRight: theme.spacing(1),
+  },
+  modal: {
+    position: "absolute",
+    width: 800,
+    backgroundColor: "white",
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    //padding: theme.spacing(2,4,3,4),
+    padding: "16px 32px 24px",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
+  textfield: {
+    width: "100%",
+  },
+  container: {
+    //textAlign: 'center',
+  },
 }));
 
 const Chart = ({ db, name, className, ...rest }) => {
@@ -96,17 +120,70 @@ const Chart = ({ db, name, className, ...rest }) => {
   //   return () => clearInterval(id)
   // }, [])
 
+  const styles = useStyles();
+
+  const [modal, setModal] = useState(false);
+
+  const abrirCerrarModal = () => {
+    setModal(!modal);
+  };
+
+  
+
+  const body = (
+    <div className={styles.modal}>
+      <div align="center">
+        <h2>Detalle</h2>
+      </div>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>TABLESPACE</TableCell>
+            <TableCell>USED GB</TableCell>
+            <TableCell>FREE GB</TableCell>
+            <TableCell>TOTAL GB</TableCell>
+            <TableCell>PCT FREE</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+        {typeof db !== 'undefined' ? db.lstTablespace.map((key) => (
+              <TableRow
+                hover
+                key={key}
+              >
+                
+                <TableCell>
+                {key.TABLESPACE}
+                </TableCell>
+                <TableCell>
+                {key["USED GB"]}
+                </TableCell>
+                <TableCell>
+                {key.FREE_GB}
+                </TableCell>
+                <TableCell>
+                {key.TOTAL_GB}
+                </TableCell>
+                <TableCell>
+                {key.PCT_FREE}
+                </TableCell>
+              </TableRow>
+            )): <TableRow>
+               <TableCell>No hay data</TableCell>
+              </TableRow>}
+        </TableBody>
+      </Table>
+      <br /> <br />
+      <div align="right">
+        <Button onClick={() => abrirCerrarModal()}>Cerrar</Button>
+      </div>
+    </div>
+  );
+
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
-        <Grid
-          container
-          justify="center"
-          spacing={3}
-        >
+        <Grid container justify="center" spacing={3}>
           <Grid item alignItems="center">
             <Typography
               gutterBottom
@@ -122,14 +199,25 @@ const Chart = ({ db, name, className, ...rest }) => {
         </div>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary" >Table Space</Button>
+        <div className={styles.container}>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => abrirCerrarModal()}
+          >
+            Table Space
+          </Button>
+          <Modal open={modal} onClose={abrirCerrarModal}>
+            {body}
+          </Modal>
+        </div>
       </CardActions>
     </Card>
   );
 };
 
 Chart.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default Chart;
