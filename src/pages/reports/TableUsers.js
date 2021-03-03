@@ -86,16 +86,16 @@ const TableUsers = ({ data }) => {
                   {key}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["AVAIL"])/1024/1024/1024).toFixed(2) + " GB": ""}
+                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["AVAIL"])/1024/1024).toFixed(2) + " GB": ""}
                 </TableCell>
                 <TableCell>
                   {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["FILESYSTEM"] : ""}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["SIZE"])/1024/1024/1024).toFixed(2) + " GB" : ""}
+                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["SIZE"])/1024/1024).toFixed(2) + " GB" : ""}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["USED"])/1024/1024/1024).toFixed(2) + " GB" : ""}
+                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["USED"])/1024/1024).toFixed(2) + " GB" : ""}
                 </TableCell>
                 <TableCell>
                   {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["URL"] : ""}
