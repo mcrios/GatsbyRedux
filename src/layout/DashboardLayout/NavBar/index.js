@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
 import {
   Avatar,
   Box,
@@ -10,7 +10,7 @@ import {
   Typography,
   Link,
   makeStyles
-} from '@material-ui/core';
+} from '@material-ui/core'
 import {
   AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
@@ -32,7 +32,7 @@ const user = {
 
 const items = [
   {
-    href: '/home/',
+    href: '/home',
     icon: BarChartIcon,
     title: 'Dashboard'
   },
@@ -52,7 +52,7 @@ const items = [
     title: 'Account'
   },
   {
-    href: '/app/settings',
+    href: '/admin',
     icon: SettingsIcon,
     title: 'Settings'
   },
@@ -85,16 +85,17 @@ const useStyles = makeStyles(() => ({
   avatar: {
     cursor: 'pointer',
     width: 64,
-    height: 64
+    height: 64,
+    color: 'black'
   }
 }));
 
 const NavBar = ({ onMobileClose, openMobile }) => {
-  const classes = useStyles();
+  const classes = useStyles()
   const usuario = useSelector(store => store.usuario.usuario)
   useEffect(() => {
     if (openMobile && onMobileClose) {
-      onMobileClose();
+      onMobileClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -122,7 +123,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="body1"
         >
-          {typeof usuario !== `undefined`? usuario.username: ''}
+          {typeof usuario !== `undefined`? usuario.username: 'Server Monitor'}
         </Typography>
         <Typography
           color="textSecondary"

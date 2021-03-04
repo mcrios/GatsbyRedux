@@ -88,7 +88,6 @@ const Chart = ({ db, name, className, ...rest }) => {
     },
     legend: {
       labelFormatter: function () {
-        console.log(this);
         return this.name + ': ' + this.y + ' GB';
       }
     },
@@ -146,7 +145,7 @@ const Chart = ({ db, name, className, ...rest }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-        {typeof db !== 'undefined' ? db.lstTablespace.map((key) => (
+        {typeof db !== 'undefined' && typeof db.lstTablespace !== 'undefined' ? db.lstTablespace.map((key) => (
               <TableRow
                 hover
                 key={key}
@@ -213,11 +212,11 @@ const Chart = ({ db, name, className, ...rest }) => {
         </div>
       </CardActions>
     </Card>
-  );
-};
+  )
+}
 
 Chart.propTypes = {
   className: PropTypes.string,
-};
+}
 
 export default Chart;

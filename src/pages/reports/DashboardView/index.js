@@ -50,15 +50,6 @@ const Dashboard = () => {
           ))}
           <Grid
             item
-            lg={6}
-            md={6}
-            xl={9}
-            xs={6}
-          >
-            <Chart db={data.DBPLANILLASV} name={Object.keys(data)[1]}/>
-          </Grid>
-          <Grid
-            item
             lg={12}
             md={12}
             xl={9}
