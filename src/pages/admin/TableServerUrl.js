@@ -95,7 +95,7 @@ const TableServerUrl = ({ data }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {typeof data !== 'undefined' ? data.map((key) => (
+            {typeof data !== 'undefined' && data.length > 0 ? data.map((key) => (
               <TableRow
                 hover
                 key={key.idcon}
@@ -128,7 +128,7 @@ const TableServerUrl = ({ data }) => {
               </TableRow>
             )) :
               <TableRow>
-                <TableCell colSpan="3"> A&uacute;n no hay informaci&oacute;n</TableCell>
+                <TableCell colSpan="5" style={{textAlign: 'center'}}> A&uacute;n no hay informaci&oacute;n</TableCell>
               </TableRow>}
           </TableBody>
         </Table>
@@ -140,7 +140,7 @@ const TableServerUrl = ({ data }) => {
               initialValues={{
                 tipo: '',
                 url: '',
-                server: typeof data !== 'undefined' ? data[0].idser : 0,
+                server: typeof data !== 'undefined' &&  typeof data[0] !== 'undefined' ? data[0].idser : 0,
                 usuario: '',
                 contrasena: ''
               }}

@@ -22,11 +22,11 @@ export default function serverReducer(state = dataInicial, action) {
         case LOADURL:
             return { ...state, urlServer: action.payload }
         case ADD:
-            return { ...state, data: state.data.concat(action.payload) }
+            return { ...state, servidores: state.servidores.concat(action.payload) }
         case UPDATE:
             return {
-                ...state, data: state.data.map((server) => {
-                    if (server.id === action.payload.id) {
+                ...state, servidores: state.servidores.map((server) => {
+                    if (server.idser === action.payload.idser) {
                         return {
                             ...server,
                             nombre: action.payload.nombre,
@@ -38,7 +38,8 @@ export default function serverReducer(state = dataInicial, action) {
                 })
             }
         case DELETE:
-            return { ...state, data: state.data.filter((server) => server.id !== action.payload) }
+            console.log("ID SERVER: " + action.payload)
+            return { ...state, servidores: state.servidores.filter((server) => server.idser !== action.payload) }
         default:
             return state
     }
@@ -99,11 +100,11 @@ export const agregarServer = (server) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'post',
         url: '/monitor/addServer',
-        data: server
+        params: server
     }).then(res => {
         dispatch({
             type: ADD,
-            payload: res.data
+            payload: res.data.data
         })
     }).catch(error => {
         console.log(error.response);
@@ -111,15 +112,33 @@ export const agregarServer = (server) => async (dispatch, getState) => {
     })
 }
 
-export const eliminarServer = (server) => async (dispatch, getState) => {
+export const actualizarServer = (server) => async (dispatch, getState) => {
 
     await axiosConfig({
         method: 'post',
-        url: `/monitor/deleteServer/${server}`,
+        url: '/monitor/updateServer',
+        params: server
+    }).then(res => {
+        dispatch({
+            type: UPDATE,
+            payload: server
+        })
+    }).catch(error => {
+        console.log(error.response);
+        navigate('/')
+    })
+}
+
+export const eliminarServer = (idser) => async (dispatch, getState) => {
+
+    await axiosConfig({
+        method: 'post',
+        url: '/monitor/deleteServer',
+        params: {"idser": idser}
     }).then(res => {
         dispatch({
             type: DELETE,
-            payload: server
+            payload: idser
         })
     }).catch(error => {
         console.log(error.response);

@@ -24,7 +24,7 @@ import { Edit, PlusCircle, Trash } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup';
 import { Formik } from 'formik'
-import { cargarUrlServer } from '../../redux/serverReducer';
+import { agregarServer, cargarUrlServer, eliminarServer, actualizarServer } from '../../redux/serverReducer';
 
 const useStyles = makeStyles(() => ({
   headDark: {
@@ -54,6 +54,7 @@ const TableServer = ({ data }) => {
   const [open, setOpen] = useState(false)
   const classes = useStyles()
   const [openAdd, setOpenAdd] = useState(false)
+  const [server, setServer] = useState({})
   const dispatch = useDispatch()
 
   return (
@@ -99,13 +100,13 @@ const TableServer = ({ data }) => {
                 </TableCell>
                 <TableCell className={classes.row}>
                   <IconButton color="secondary" onClick={() => {
-                    // dispatch(eliminarUsuario(user.id)) 
+                    dispatch(eliminarServer(key.idser)) 
                   }}>
                     <Trash size="15" />
                   </IconButton>
                   <IconButton color="secondary" onClick={() => {
+                    setServer(key)
                     setOpen(true)
-                    // dispatch(configurarUsuario(user))
                   }}>
                     <Edit size="15" />
                   </IconButton>
@@ -113,7 +114,7 @@ const TableServer = ({ data }) => {
               </TableRow>
             )) : 
             <TableRow>
-              <TableCell colSpan="3"> A&uacute;n no hay informaci&oacute;n</TableCell>  
+              <TableCell colSpan="3" style={{textAlign: 'center'}}> A&uacute;n no hay informaci&oacute;n</TableCell>  
             </TableRow>}
           </TableBody>
         </Table>
@@ -133,8 +134,7 @@ const TableServer = ({ data }) => {
                 })
               }
               onSubmit={(values) => {
-                //dispatch(agregarUsuario(values))
-                console.log("Agregando Server");
+                dispatch(agregarServer(values))
                 setOpenAdd(false)
               }}
             >
@@ -210,10 +210,7 @@ const TableServer = ({ data }) => {
         <Dialog open={open} onClose={() => { setOpen(false) }} aria-labelledby="form-add-server">
           <DialogContent>
             <Formik
-              initialValues={{
-                nombre: '',
-                descripcion: ''
-              }}
+              initialValues={server}
               validationSchema={
                 Yup.object().shape({
                   nombre: Yup.string().max(255).required('Nombre is required'),
@@ -221,9 +218,8 @@ const TableServer = ({ data }) => {
                 })
               }
               onSubmit={(values) => {
-                //dispatch(agregarUsuario(values))
-                console.log("Agregando Server");
-                setOpenAdd(false)
+                dispatch(actualizarServer(values))
+                setOpen(false)
               }}
             >
               {({

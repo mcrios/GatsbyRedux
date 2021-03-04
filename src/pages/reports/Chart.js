@@ -93,9 +93,11 @@ const Chart = ({ db, name, className, ...rest }) => {
     },
     legend: {
       labelFormatter: function () {
-        console.log(this);
         return this.name + ': ' + this.y + ' GB';
       }
+    },
+    credits: {
+      enabled: false
     },
     series: [
       {
