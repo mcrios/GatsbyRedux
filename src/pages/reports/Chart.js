@@ -10,15 +10,21 @@ import {
   makeStyles,
   CardActions,
   Button,
+  Modal,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  Modal,
-  TableBody
-} from '@material-ui/core'
-import HighchartsReact from 'highcharts-react-official'
-import HighchartsStockChart from 'highcharts'
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+import HighchartsReact from "highcharts-react-official";
+import HighchartsStockChart from "highcharts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,56 +63,61 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Chart = ({ db, name, className, ...rest }) => {
-
   const options = {
     chart: {
       plotBackgroundColor: null,
       plotBorderWidth: null,
       plotShadow: false,
-      type: 'pie'
+      type: "pie",
     },
     title: {
-      text: name
+      text: name,
     },
     tooltip: {
-      pointFormat: '{series.name}: <b>{point.y} GB</b>'
+      pointFormat: "{series.name}: <b>{point.y} GB</b>",
     },
     accessibility: {
       point: {
-        valueSuffix: '%'
-      }
+        valueSuffix: "%",
+      },
     },
     plotOptions: {
       pie: {
         allowPointSelect: true,
-        cursor: 'pointer',
+        cursor: "pointer",
         dataLabels: {
-          enabled: false
+          enabled: false,
         },
-        showInLegend: true
-      }
+        showInLegend: true,
+      },
     },
     legend: {
       labelFormatter: function () {
+        console.log(this);
         return this.name + ': ' + this.y + ' GB';
       }
     },
-    series: [{
-      name: 'Almacenamiento',
-      colorByPoint: true,
-      data: [{
-        name: 'Disponible',
-        color: '#1D7BFA',
-        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["AVAIL"] / 1024 / 1024).toFixed(2) : 0)
-      }, {
-        name: 'Usado',
-        color: '#FB306A',
-        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["USED"] / 1024 / 1024).toFixed(2) : 0)
-      }]
-    }]
+    series: [
+      {
+        name: "Almacenamiento",
+        colorByPoint: true,
+        data: [
+          {
+            name: "Disponible",
+            color: "#4285f4",
+            y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["AVAIL"] / 1024 / 1024).toFixed(2) : 0)
+          },
+          {
+            name: "Usada",
+            color: "#FB306A",
+            y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["USED"] / 1024 / 1024).toFixed(2) : 0)
+          },
+        ],
+      },
+    ],
   }
 
-  const classes = useStyles()
+  const classes = useStyles();
   // const dispatch = useDispatch()
   // const conteo = useSelector(store => store.usuario.contador)
 
@@ -127,12 +138,10 @@ const Chart = ({ db, name, className, ...rest }) => {
     setModal(!modal);
   };
 
-  
-
   const body = (
-    <div className={styles.modal}>
+    <DialogContent>
       <div align="center">
-        <h2>Detalle</h2>
+        <h2>TABLESPACE</h2>
       </div>
       <Table>
         <TableHead>
@@ -145,37 +154,59 @@ const Chart = ({ db, name, className, ...rest }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-        {typeof db !== 'undefined' && typeof db.lstTablespace !== 'undefined' ? db.lstTablespace.map((key) => (
-              <TableRow
-                hover
-                key={key}
-              >
-                
-                <TableCell>
-                {key.TABLESPACE}
-                </TableCell>
-                <TableCell>
-                {key["USED GB"]}
-                </TableCell>
-                <TableCell>
-                {key.FREE_GB}
-                </TableCell>
-                <TableCell>
-                {key.TOTAL_GB}
-                </TableCell>
-                <TableCell>
-                {key.PCT_FREE}
-                </TableCell>
+          {typeof db !== "undefined" ? (
+            db.lstTablespace.map((key) => (
+              <TableRow hover key={key}>
+                <TableCell>{key.TABLESPACE}</TableCell>
+                <TableCell>{key["USED GB"]}</TableCell>
+                <TableCell>{key.FREE_GB}</TableCell>
+                <TableCell>{key.TOTAL_GB}</TableCell>
+                <TableCell>{key.PCT_FREE}</TableCell>
               </TableRow>
-            )): <TableRow>
-               <TableCell>No hay data</TableCell>
-              </TableRow>}
+            ))
+          ) : (
+              <TableRow>
+                <TableCell>No hay data</TableCell>
+              </TableRow>
+            )}
         </TableBody>
       </Table>
       <br /> <br />
       <div align="right">
         <Button onClick={() => abrirCerrarModal()}>Cerrar</Button>
       </div>
+    </DialogContent>
+  );
+
+  const tablaCard = (
+    <div>
+      <div align="center">
+        <h2> TOP TABLESPACE</h2>
+      </div>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>TABLESPACE</TableCell>
+            <TableCell>USED GB</TableCell>
+            <TableCell>FREE GB</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {typeof db !== "undefined" ? (
+            db.lstTablespace.slice(0, 5).map((key) => (
+              <TableRow hover key={key}>
+                <TableCell>{key.TABLESPACE}</TableCell>
+                <TableCell>{key["USED GB"]}</TableCell>
+                <TableCell>{key.FREE_GB}</TableCell>
+              </TableRow>
+            ))
+          ) : (
+              <TableRow>
+                <TableCell>No hay data</TableCell>
+              </TableRow>
+            )}
+        </TableBody>
+      </Table>
     </div>
   );
 
@@ -184,17 +215,22 @@ const Chart = ({ db, name, className, ...rest }) => {
       <CardContent>
         <Grid container justify="center" spacing={3}>
           <Grid item alignItems="center">
-            <Typography
-              gutterBottom
-              variant="h6"
-            >
+            <Typography gutterBottom variant="h6">
               Estado de disco en: {name}
             </Typography>
           </Grid>
         </Grid>
 
         <div>
-          <HighchartsReact highcharts={HighchartsStockChart} options={options} />
+          <HighchartsReact
+            highcharts={HighchartsStockChart}
+            options={options}
+          />
+        </div>
+      </CardContent>
+      <CardContent>
+        <div className={styles.container}>
+          {tablaCard}
         </div>
       </CardContent>
       <CardActions>
@@ -204,11 +240,11 @@ const Chart = ({ db, name, className, ...rest }) => {
             color="primary"
             onClick={() => abrirCerrarModal()}
           >
-            Table Space
+            TABLESPACE
           </Button>
-          <Modal open={modal} onClose={abrirCerrarModal}>
+          <Dialog open={modal} onClose={abrirCerrarModal}>
             {body}
-          </Modal>
+          </Dialog>
         </div>
       </CardActions>
     </Card>
