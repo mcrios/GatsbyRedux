@@ -20,6 +20,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from '@material-ui/core'
 
@@ -41,11 +42,13 @@ const TableUsers = ({ data }) => {
     <Card>
       <CardHeader title="Estado Servidores"
         action={
+          <Tooltip title="Agregar Server">
           <IconButton variant="contained" color="primary" onClick={() => {
             setOpenAdd(true)
           }}>
             <Mail />
           </IconButton>
+          </Tooltip>
         }
       />
       <Divider />

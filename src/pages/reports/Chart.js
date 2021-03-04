@@ -156,7 +156,7 @@ const Chart = ({ db, name, className, ...rest }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {typeof db !== "undefined" ? (
+          {typeof db !== "undefined" && typeof db.lstTablespace !== "undefined" ? (
             db.lstTablespace.map((key) => (
               <TableRow hover key={key}>
                 <TableCell>{key.TABLESPACE}</TableCell>
@@ -194,7 +194,7 @@ const Chart = ({ db, name, className, ...rest }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {typeof db !== "undefined" ? (
+          {typeof db !== "undefined" && typeof db.lstTablespace !== "undefined" ? (
             db.lstTablespace.slice(0, 5).map((key) => (
               <TableRow hover key={key}>
                 <TableCell>{key.TABLESPACE}</TableCell>
