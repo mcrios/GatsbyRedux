@@ -10,33 +10,17 @@ import {
   makeStyles,
   CardActions,
   Button,
-<<<<<<< HEAD
-  Modal,
   Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  Modal,
   TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  Dialog,
-  DialogActions,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@material-ui/core";
-import HighchartsReact from "highcharts-react-official";
-import HighchartsStockChart from "highcharts";
-=======
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  Modal,
-  TableBody
+  Dialog
 } from '@material-ui/core'
 import HighchartsReact from 'highcharts-react-official'
 import HighchartsStockChart from 'highcharts'
->>>>>>> 16fd321129360f31a6a546fd404a1f84199707a7
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,41 +89,6 @@ const Chart = ({ db, name, className, ...rest }) => {
         showInLegend: true,
       },
     },
-<<<<<<< HEAD
-    series: [
-      {
-        name: "Almacenamiento",
-        colorByPoint: true,
-        data: [
-          {
-            name: "Disponible",
-            color: "#4285f4",
-            y: Number(
-              typeof db !== "undefined" && typeof db["/u01"] !== "undefined"
-                ? parseFloat(db["/u01"]["AVAIL"] / 1024 / 1024 / 1024).toFixed(
-                    2
-                  )
-                : 0
-            ),
-          },
-          {
-            name: "Usada",
-            color: "#FB306A",
-            y: Number(
-              typeof db !== "undefined" && typeof db["/u01"] !== "undefined"
-                ? parseFloat(db["/u01"]["USED"] / 1024 / 1024 / 1024).toFixed(2)
-                : 0
-            ),
-          },
-        ],
-      },
-    ],
-  };
-
-  const [open, setOpen] = useState(false)
-
-  const classes = useStyles();
-=======
     legend: {
       labelFormatter: function () {
         console.log(this);
@@ -162,7 +111,6 @@ const Chart = ({ db, name, className, ...rest }) => {
   }
 
   const classes = useStyles()
->>>>>>> 16fd321129360f31a6a546fd404a1f84199707a7
   // const dispatch = useDispatch()
   // const conteo = useSelector(store => store.usuario.contador)
 
@@ -260,16 +208,11 @@ const Chart = ({ db, name, className, ...rest }) => {
       <CardContent>
         <Grid container justify="center" spacing={3}>
           <Grid item alignItems="center">
-<<<<<<< HEAD
-            <Typography gutterBottom variant="h6">
-              Estado de memoria en BD: {name}
-=======
             <Typography
               gutterBottom
               variant="h6"
             >
               Estado de disco en: {name}
->>>>>>> 16fd321129360f31a6a546fd404a1f84199707a7
             </Typography>
           </Grid>
         </Grid>
@@ -293,11 +236,7 @@ const Chart = ({ db, name, className, ...rest }) => {
             color="primary"
             onClick={() => abrirCerrarModal()}
           >
-<<<<<<< HEAD
-            TABLESPACE
-=======
             Table Space
->>>>>>> 16fd321129360f31a6a546fd404a1f84199707a7
           </Button>
           <Dialog open={modal} onClose={abrirCerrarModal}>
             {body}
