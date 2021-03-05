@@ -10,17 +10,21 @@ import {
   makeStyles,
   CardActions,
   Button,
+  Modal,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  Modal,
-  TableBody,
+  TextField,
+  Dialog,
+  DialogActions,
   DialogContent,
-  Dialog
-} from '@material-ui/core'
-import HighchartsReact from 'highcharts-react-official'
-import HighchartsStockChart from 'highcharts'
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
+import HighchartsReact from "highcharts-react-official";
+import HighchartsStockChart from "highcharts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,12 +57,8 @@ const useStyles = makeStyles((theme) => ({
   textfield: {
     width: "100%",
   },
-  container: {
-    //textAlign: 'center',
-  },
+  
 }));
-
-
 
 const Chart = ({ db, name, className, ...rest }) => {
   const options = {
@@ -91,26 +91,33 @@ const Chart = ({ db, name, className, ...rest }) => {
     },
     legend: {
       labelFormatter: function () {
-        console.log(this);
         return this.name + ': ' + this.y + ' GB';
       }
     },
-    series: [{
-      name: 'Almacenamiento',
-      colorByPoint: true,
-      data: [{
-        name: 'Disponible',
-        color: '#1D7BFA',
-        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["AVAIL"] / 1024 / 1024).toFixed(2) : 0)
-      }, {
-        name: 'Usado',
-        color: '#FB306A',
-        y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["USED"] / 1024 / 1024).toFixed(2) : 0)
-      }]
-    }]
+    credits: {
+      enabled: false
+    },
+    series: [
+      {
+        name: "Almacenamiento",
+        colorByPoint: true,
+        data: [
+          {
+            name: "Disponible",
+            color: "#4285f4",
+            y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["AVAIL"] / 1024 / 1024).toFixed(2) : 0)
+          },
+          {
+            name: "Usada",
+            color: "#FB306A",
+            y: Number(typeof db !== 'undefined' && typeof db["/u01"] !== 'undefined' ? parseFloat(db["/u01"]["USED"] / 1024 / 1024).toFixed(2) : 0)
+          },
+        ],
+      },
+    ],
   }
 
-  const classes = useStyles()
+  const classes = useStyles();
   // const dispatch = useDispatch()
   // const conteo = useSelector(store => store.usuario.contador)
 
@@ -147,7 +154,7 @@ const Chart = ({ db, name, className, ...rest }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {typeof db !== "undefined" ? (
+          {typeof db !== "undefined" && typeof db.lstTablespace !== "undefined" ? (
             db.lstTablespace.map((key) => (
               <TableRow hover key={key}>
                 <TableCell>{key.TABLESPACE}</TableCell>
@@ -158,10 +165,10 @@ const Chart = ({ db, name, className, ...rest }) => {
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell>No hay data</TableCell>
-            </TableRow>
-          )}
+              <TableRow>
+                <TableCell>No hay data</TableCell>
+              </TableRow>
+            )}
         </TableBody>
       </Table>
       <br /> <br />
@@ -185,8 +192,8 @@ const Chart = ({ db, name, className, ...rest }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {typeof db !== "undefined" ? (
-            db.lstTablespace.slice(0,5).map((key) => (
+          {typeof db !== "undefined" && typeof db.lstTablespace !== "undefined" ? (
+            db.lstTablespace.slice(0, 5).map((key) => (
               <TableRow hover key={key}>
                 <TableCell>{key.TABLESPACE}</TableCell>
                 <TableCell>{key["USED GB"]}</TableCell>
@@ -194,10 +201,10 @@ const Chart = ({ db, name, className, ...rest }) => {
               </TableRow>
             ))
           ) : (
-            <TableRow>
-              <TableCell>No hay data</TableCell>
-            </TableRow>
-          )}
+              <TableRow>
+                <TableCell>No hay data</TableCell>
+              </TableRow>
+            )}
         </TableBody>
       </Table>
     </div>
@@ -208,10 +215,7 @@ const Chart = ({ db, name, className, ...rest }) => {
       <CardContent>
         <Grid container justify="center" spacing={3}>
           <Grid item alignItems="center">
-            <Typography
-              gutterBottom
-              variant="h6"
-            >
+            <Typography gutterBottom variant="h6">
               Estado de disco en: {name}
             </Typography>
           </Grid>
@@ -225,9 +229,9 @@ const Chart = ({ db, name, className, ...rest }) => {
         </div>
       </CardContent>
       <CardContent>
-      <div className={styles.container}>
-        {tablaCard}
-      </div>
+        <div className={styles.container}>
+          {tablaCard}
+        </div>
       </CardContent>
       <CardActions>
         <div className={styles.container}>
@@ -236,7 +240,7 @@ const Chart = ({ db, name, className, ...rest }) => {
             color="primary"
             onClick={() => abrirCerrarModal()}
           >
-            Table Space
+            TABLESPACE
           </Button>
           <Dialog open={modal} onClose={abrirCerrarModal}>
             {body}
@@ -244,11 +248,11 @@ const Chart = ({ db, name, className, ...rest }) => {
         </div>
       </CardActions>
     </Card>
-  );
-};
+  )
+}
 
 Chart.propTypes = {
   className: PropTypes.string,
-};
+}
 
 export default Chart;

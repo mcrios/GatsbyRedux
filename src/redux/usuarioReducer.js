@@ -126,7 +126,6 @@ export const agregarUsuario = (user) => async (dispatch, getState) => {
             type: ADD,
             payload: res.data
         })
-        navigate('/home/')
     }).catch(error => {
         console.log(error.response);
         navigate('/')

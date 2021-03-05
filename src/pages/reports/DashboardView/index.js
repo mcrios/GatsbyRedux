@@ -39,6 +39,7 @@ const Dashboard = () => {
         >
           {Object.keys(data).map((db) => (
             <Grid
+            key={db}
             item
             lg={4}
             md={4}
@@ -48,15 +49,6 @@ const Dashboard = () => {
             <Chart db={data[db]} name={db}/>
           </Grid>
           ))}
-          <Grid
-            item
-            lg={6}
-            md={6}
-            xl={9}
-            xs={6}
-          >
-            <Chart db={data.DBPLANILLASV} name={Object.keys(data)[1]}/>
-          </Grid>
           <Grid
             item
             lg={12}

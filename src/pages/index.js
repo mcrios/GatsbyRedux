@@ -52,7 +52,8 @@ const IndexPage = () => {
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={(values) => {
-              dispatch(obtenerToken(values))
+              //dispatch(obtenerToken(values))
+              navigate('/home')
             }}
           >
             {({
