@@ -4,7 +4,7 @@ import serverReducer from './serverReducer';
 import usuarioReducer from './usuarioReducer'
 
 const rootReducer = combineReducers({
-    usuario: usuarioReducer,
+    // usuario: usuarioReducer,
     server: serverReducer
 })
 

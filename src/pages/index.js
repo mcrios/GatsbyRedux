@@ -13,7 +13,6 @@ import { Formik } from 'formik'
 import { navigate } from 'gatsby'
 import Page from '../component/Page'
 import { useDispatch } from 'react-redux'
-import { obtenerToken } from '../redux/usuarioReducer'
 
 const useStyles = makeStyles((theme) => ({
   root: {

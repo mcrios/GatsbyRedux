@@ -12,17 +12,10 @@ import {
   makeStyles
 } from '@material-ui/core'
 import {
-  AlertCircle as AlertCircleIcon,
   BarChart as BarChartIcon,
-  Lock as LockIcon,
   Settings as SettingsIcon,
-  ShoppingBag as ShoppingBagIcon,
-  User as UserIcon,
-  UserPlus as UserPlusIcon,
-  Users as UsersIcon
 } from 'react-feather';
-import NavItem from './NavItem';
-import { useSelector } from 'react-redux';
+import NavItem from './NavItem'
 
 const user = {
   avatar: '/static/images/avatars/avatar_6.png',
@@ -92,7 +85,7 @@ const useStyles = makeStyles(() => ({
 
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles()
-  const usuario = useSelector(store => store.usuario.usuario)
+
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose()
@@ -123,13 +116,13 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="body1"
         >
-          {typeof usuario !== `undefined`? usuario.username: 'Server Monitor'}
+          Server Monitor'
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          {typeof usuario !== `undefined`? usuario.authorities[0].authority: ''}
+          
         </Typography>
       </Box>
       <Divider />

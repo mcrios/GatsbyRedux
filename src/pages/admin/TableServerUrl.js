@@ -284,6 +284,7 @@ const TableServerUrl = ({ data, server }) => {
                         error={Boolean(touched.contrasena && errors.contrasena)}
                         helperText={touched.contrasena && errors.contrasena}
                         fullWidth
+                        type="password"
                         label="Contraseña"
                         margin="normal"
                         name="contrasena"
@@ -459,6 +460,7 @@ const TableServerUrl = ({ data, server }) => {
                         error={Boolean(touched.contrasena && errors.contrasena)}
                         helperText={touched.contrasena && errors.contrasena}
                         fullWidth
+                        type="password"
                         label="Contraseña"
                         margin="normal"
                         name="contrasena"
