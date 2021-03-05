@@ -64,7 +64,7 @@ const Dashboard = () => {
               item
               lg={12}
               md={12}
-              xl={6}
+              xl={12}
               xs={12}
               style={{textAlign: 'center'}}
             >
@@ -79,7 +79,7 @@ const Dashboard = () => {
                 item
                 lg={4}
                 md={4}
-                xl={3}
+                xl={4}
                 xs={4}
               >
                 <Chart db={data[db]} name={db} />
