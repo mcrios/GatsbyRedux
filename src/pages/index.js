@@ -29,7 +29,7 @@ const IndexPage = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [usuario] = useState({
-    email: 'mauro99rios@gmail.com',
+    email: 'admin@premium.sv',
     password: '12345'
   })
 

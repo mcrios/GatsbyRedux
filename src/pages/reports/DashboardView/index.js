@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import {
+  Button,
   Container,
   Grid,
+  IconButton,
   makeStyles
 } from '@material-ui/core'
 import Page from '../../../component/Page'
@@ -10,6 +12,7 @@ import TableUsers from '../TableUsers'
 import { cargarEstados, showLoader } from '../../../redux/serverReducer'
 import Chart from '../Chart'
 import HashLoader from 'react-spinners/HashLoader'
+import { RefreshCcw } from 'react-feather'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,12 +30,17 @@ const Dashboard = () => {
   const loading = useSelector((store) => store.server.loading)
 
   useEffect(() => {
-    if(typeof data === 'undefined' || data.length <= 0){
+    if (typeof data === 'undefined' || data.length <= 0) {
       dispatch(showLoader())
     }
     dispatch(cargarEstados())
   }, [])
-  
+
+  const handleRefresh = () => {
+    dispatch(showLoader())
+    dispatch(cargarEstados())
+  }
+
   if (loading)
     return (
       <HashLoader color="#4A90E2" loading={loading} size={80} css={{
@@ -51,8 +59,21 @@ const Dashboard = () => {
         <Container maxWidth={false}>
           <Grid
             container
-            spacing={3}
+            spacing={2}
           >
+            <Grid
+              item
+              lg={12}
+              md={12}
+              xl={6}
+              xs={12}
+              style={{textAlign: 'center'}}
+            >
+              <Button variant="outlined" color="primary" onClick={handleRefresh} size="small">
+                <RefreshCcw size={15} />
+                &nbsp; Refresh
+              </Button>
+            </Grid>
             {Object.keys(data).map((db) => (
               <Grid
                 key={db}
