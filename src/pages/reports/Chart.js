@@ -279,4 +279,4 @@ Chart.propTypes = {
   className: PropTypes.string,
 }
 
-export default Chart;
+export default Chart
