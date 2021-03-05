@@ -22,6 +22,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  TableContainer,
+  Paper
 } from "@material-ui/core";
 import HighchartsReact from "highcharts-react-official";
 import HighchartsStockChart from "highcharts";
@@ -75,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "5px",
     textAlign: "center",
     wordWrap: "break-word",
-  }
+  },
 }));
 
 const Chart = ({ db, name, className, ...rest }) => {
@@ -175,11 +177,11 @@ const Chart = ({ db, name, className, ...rest }) => {
           {typeof db !== "undefined" && typeof db.lstTablespace !== "undefined" ? (
             db.lstTablespace.map((key) => (
               <TableRow hover key={key}>
-                <TableCell className={classes.row}>{key.TABLESPACE}</TableCell>
-                <TableCell className={classes.row}>{key["USED GB"]}</TableCell>
-                <TableCell className={classes.row}>{key.FREE_GB}</TableCell>
-                <TableCell className={classes.row}>{key.TOTAL_GB}</TableCell>
-                <TableCell className={classes.row}>{key.PCT_FREE}</TableCell>
+                <TableCell >{key.TABLESPACE}</TableCell>
+                <TableCell >{key["USED GB"]}</TableCell>
+                <TableCell >{key.FREE_GB}</TableCell>
+                <TableCell >{key.TOTAL_GB}</TableCell>
+                <TableCell >{key.PCT_FREE}</TableCell>
               </TableRow>
             ))
           ) : (
@@ -201,12 +203,14 @@ const Chart = ({ db, name, className, ...rest }) => {
       <div align="center">
         <h2> TOP TABLESPACE</h2>
       </div>
+      <TableContainer component={Paper}>
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell className={classes.headTable}>TABLESPACE</TableCell>
             <TableCell className={classes.headTable}>USED GB</TableCell>
             <TableCell className={classes.headTable}>FREE GB</TableCell>
+            <TableCell className={classes.headTable}>TOTAL GB</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -216,6 +220,7 @@ const Chart = ({ db, name, className, ...rest }) => {
                 <TableCell className={classes.row}>{key.TABLESPACE}</TableCell>
                 <TableCell className={classes.row}>{key["USED GB"]}</TableCell>
                 <TableCell className={classes.row}>{key.FREE_GB}</TableCell>
+                <TableCell className={classes.row}>{key.TOTAL_GB}</TableCell>
               </TableRow>
             ))
           ) : (
@@ -225,6 +230,7 @@ const Chart = ({ db, name, className, ...rest }) => {
             )}
         </TableBody>
       </Table>
+      </TableContainer>
     </div>
   );
 
