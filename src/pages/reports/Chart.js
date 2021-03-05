@@ -57,7 +57,25 @@ const useStyles = makeStyles((theme) => ({
   textfield: {
     width: "100%",
   },
-  
+  headDark: {
+    backgroundColor: colors.blueGrey[900],
+    color: "white",
+    padding: "10px"
+  },
+  headTable: {
+    backgroundColor: colors.blueGrey[900],
+    color: "white",
+    textAlign: 'center'
+  },
+  content: {
+    padding: "0px"
+  },
+  row:{
+    fontSize: "11px",
+    maxWidth: "5px",
+    textAlign: "center",
+    wordWrap: "break-word",
+  }
 }));
 
 const Chart = ({ db, name, className, ...rest }) => {
@@ -143,25 +161,25 @@ const Chart = ({ db, name, className, ...rest }) => {
       <div align="center">
         <h2>TABLESPACE</h2>
       </div>
-      <Table>
+      <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>TABLESPACE</TableCell>
-            <TableCell>USED GB</TableCell>
-            <TableCell>FREE GB</TableCell>
-            <TableCell>TOTAL GB</TableCell>
-            <TableCell>PCT FREE</TableCell>
+            <TableCell className={classes.headTable}>TABLESPACE</TableCell>
+            <TableCell className={classes.headTable}>USED GB</TableCell>
+            <TableCell className={classes.headTable}>FREE GB</TableCell>
+            <TableCell className={classes.headTable}>TOTAL GB</TableCell>
+            <TableCell className={classes.headTable}>PCT FREE</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {typeof db !== "undefined" && typeof db.lstTablespace !== "undefined" ? (
             db.lstTablespace.map((key) => (
               <TableRow hover key={key}>
-                <TableCell>{key.TABLESPACE}</TableCell>
-                <TableCell>{key["USED GB"]}</TableCell>
-                <TableCell>{key.FREE_GB}</TableCell>
-                <TableCell>{key.TOTAL_GB}</TableCell>
-                <TableCell>{key.PCT_FREE}</TableCell>
+                <TableCell className={classes.row}>{key.TABLESPACE}</TableCell>
+                <TableCell className={classes.row}>{key["USED GB"]}</TableCell>
+                <TableCell className={classes.row}>{key.FREE_GB}</TableCell>
+                <TableCell className={classes.row}>{key.TOTAL_GB}</TableCell>
+                <TableCell className={classes.row}>{key.PCT_FREE}</TableCell>
               </TableRow>
             ))
           ) : (
@@ -186,18 +204,18 @@ const Chart = ({ db, name, className, ...rest }) => {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>TABLESPACE</TableCell>
-            <TableCell>USED GB</TableCell>
-            <TableCell>FREE GB</TableCell>
+            <TableCell className={classes.headTable}>TABLESPACE</TableCell>
+            <TableCell className={classes.headTable}>USED GB</TableCell>
+            <TableCell className={classes.headTable}>FREE GB</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {typeof db !== "undefined" && typeof db.lstTablespace !== "undefined" ? (
             db.lstTablespace.slice(0, 5).map((key) => (
               <TableRow hover key={key}>
-                <TableCell>{key.TABLESPACE}</TableCell>
-                <TableCell>{key["USED GB"]}</TableCell>
-                <TableCell>{key.FREE_GB}</TableCell>
+                <TableCell className={classes.row}>{key.TABLESPACE}</TableCell>
+                <TableCell className={classes.row}>{key["USED GB"]}</TableCell>
+                <TableCell className={classes.row}>{key.FREE_GB}</TableCell>
               </TableRow>
             ))
           ) : (
