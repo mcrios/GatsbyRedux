@@ -3,7 +3,7 @@ import { navigate } from "gatsby"
 import axiosConfig from "../config/axiosConfig"
 
 //constantes
-const dataInicial = { data: [] }
+const dataInicial = { data: [], loading: false }
 
 const LOAD = "LOAD"
 const LOADSERVERS = "LOADSERVERS"
@@ -15,14 +15,16 @@ const ADDURL = "ADDURL"
 const UPDATEURL = "UPDATEURL"
 const DELETEURL = "DELETEURL"
 const SETIDSER = "SETIDSER"
+const SHOWLOADER = "SHOWLOADER"
+const HIDDELOADER = "HIDDELOADER"
 
 //reducer
 export default function serverReducer(state = dataInicial, action) {
     switch (action.type) {
         case LOAD:
-            return { ...state, data: action.payload }
+            return { ...state, data: action.payload, loading: false }
         case LOADSERVERS:
-            return { ...state, servidores: action.payload }
+            return { ...state, servidores: action.payload, loading: false }
         case LOADURL:
             return { ...state, urlServer: action.payload }
         case SETIDSER:
@@ -65,6 +67,10 @@ export default function serverReducer(state = dataInicial, action) {
             }
         case DELETEURL:
             return { ...state, urlServer: state.urlServer.filter((url) => url.idcon !== action.payload) }
+        case SHOWLOADER:
+            return { ...state, loading: true }
+        case HIDDELOADER:
+            return { ...state, loading: false }
         default:
             return state
     }
@@ -72,7 +78,6 @@ export default function serverReducer(state = dataInicial, action) {
 
 //acciones
 export const cargarEstados = () => async (dispatch, getState) => {
-
     await axiosConfig({
         method: 'get',
         url: '/monitor/getEstado'
@@ -231,5 +236,11 @@ export const eliminarUrlServer = (idcon) => async (dispatch, getState) => {
     }).catch(error => {
         console.log(error.response);
         navigate('/')
+    })
+}
+
+export const showLoader = () => async (dispatch, getState) => {
+    dispatch({ 
+        type: SHOWLOADER 
     })
 }
