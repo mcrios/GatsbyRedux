@@ -12,9 +12,11 @@ import {
   makeStyles
 } from '@material-ui/core'
 import {
-  BarChart as BarChartIcon,
-  Settings as SettingsIcon,
-} from 'react-feather';
+  BarChartIcon,
+  LogOut,
+  SettingsIcon,
+  User,
+} from 'react-feather'
 import NavItem from './NavItem'
 
 const user = {
@@ -47,23 +49,23 @@ const items = [
   {
     href: '/admin',
     icon: SettingsIcon,
-    title: 'Settings'
+    title: 'Admin. Server'
   },
   // {
   //   href: '/',
   //   icon: LockIcon,
   //   title: 'Login'
   // },
-  // {
-  //   href: '/Register/',
-  //   icon: UserPlusIcon,
-  //   title: 'Register'
-  // },
-  // {
-  //   href: '/404',
-  //   icon: AlertCircleIcon,
-  //   title: 'Error'
-  // }
+  {
+    href: '/usuario',
+    icon: User,
+    title: 'Admin. Usuarios'
+  },
+  {
+    href: '/',
+    icon: LogOut,
+    title: 'Salir'
+  }
 ];
 
 const useStyles = makeStyles(() => ({
@@ -83,7 +85,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const NavBar = ({ onMobileClose, openMobile }) => {
+const NavBar = ({ onMobileClose, openMobile, accesos }) => {
   const classes = useStyles()
 
   useEffect(() => {
@@ -116,29 +118,47 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           color="textPrimary"
           variant="body1"
         >
-          Server Monitor'
+          Server Monitor
         </Typography>
         <Typography
           color="textSecondary"
           variant="body2"
         >
-          
+
         </Typography>
       </Box>
       <Divider />
       <Box p={2}>
         <List>
-          {items.map((item) => (
+          {typeof accesos !== 'undefined' && accesos.length > 0 ? accesos.map((item) => (
             <NavItem
-              href={item.href}
-              key={item.title}
-              title={item.title}
-              icon={item.icon}
+              href={item.url}
+              key={item.titulo}
+              title={item.titulo}
+              icon={item.icono}
             />
-          ))}
+          )) :
+            <NavItem
+              onClick={() => {
+                localStorage.removeItem('token')
+              }}
+              href="/"
+              key="Salir"
+              title="Salir"
+              icon="sign-out-alt"
+            />}
+             <NavItem
+              onClick={() => {
+                localStorage.removeItem('token')
+              }}
+              href="/"
+              key="Salir"
+              title="Salir"
+              icon="sign-out-alt"
+            />
         </List>
       </Box>
-      
+
     </Box>
   );
 
@@ -175,7 +195,7 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  onMobileClose: () => {},
+  onMobileClose: () => { },
   openMobile: false
 };
 

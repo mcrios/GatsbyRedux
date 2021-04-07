@@ -1,16 +1,17 @@
 module.exports = {
   siteMetadata: {
-    title: "Practica",
+    title: "Monitor",
   },
   plugins: [
     // "gatsby-plugin-sitemap",
     `gatsby-plugin-material-ui`,
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-fontawesome-css`,
     {
       resolve: "gatsby-plugin-manifest",
       options: {
-        name: `Practica`,
-        short_name: `Practica`,
+        name: `Monitor`,
+        short_name: `Monitor`,
         start_url: `/`,
         lang: `es`,
         description: `Practica Redux`,

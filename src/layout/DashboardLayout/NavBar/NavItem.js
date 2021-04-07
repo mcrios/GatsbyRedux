@@ -1,12 +1,18 @@
-import React from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import React from 'react'
+import clsx from 'clsx'
+import PropTypes from 'prop-types'
 import {
   Button,
   ListItem,
   makeStyles
 } from '@material-ui/core';
-import { navigate } from 'gatsby';
+import { navigate } from 'gatsby'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+// Add all icons to the library so you can use it in your page
+library.add(fas)
 
 const useStyles = makeStyles((theme) => ({
   item: {
@@ -43,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
 const NavItem = ({
   className,
   href,
-  icon: Icon,
+  icon,
   title,
   ...rest
 }) => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <ListItem
@@ -57,14 +63,9 @@ const NavItem = ({
     >
       <Button
         className={classes.button}
-        onClick={()=>{navigate(href)}}
+        onClick={() => { navigate(href) }}
       >
-        {Icon && (
-          <Icon
-            className={classes.icon}
-            size="20"
-          />
-        )}
+        <FontAwesomeIcon icon={icon} size="lg" className={classes.icon}/>
         <span className={classes.title}>
           {title}
         </span>

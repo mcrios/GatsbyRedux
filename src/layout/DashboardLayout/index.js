@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core'
 import NavBar from './NavBar'
 import TopBar from './TopBar'
+import { cargarAccesosUsuario } from '../../redux/usuarioReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,8 +34,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DashboardLayout = () => {
-  const classes = useStyles();
-  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
+  const classes = useStyles()
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false)
+  const dispatch = useDispatch()
+  const accesos = useSelector((store) => store.usuario.accesosUsuario)
+
+  useEffect(()=>{
+    dispatch(cargarAccesosUsuario())
+  }, [])
 
   return (
     <div className={classes.root}>
@@ -41,6 +49,7 @@ const DashboardLayout = () => {
       <NavBar
         onMobileClose={() => setMobileNavOpen(false)}
         openMobile={isMobileNavOpen}
+        accesos={accesos}
       />
       <div className={classes.wrapper}>
         <div className={classes.contentContainer}>

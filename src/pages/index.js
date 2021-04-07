@@ -13,6 +13,7 @@ import { Formik } from 'formik'
 import { navigate } from 'gatsby'
 import Page from '../component/Page'
 import { useDispatch } from 'react-redux'
+import { obtenerToken } from '../redux/usuarioReducer'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +29,7 @@ const IndexPage = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [usuario] = useState({
-    email: 'admin@premium.sv',
+    username: 'mcruz',
     password: '12345'
   })
 
@@ -47,12 +48,11 @@ const IndexPage = () => {
           <Formik
             initialValues={usuario}
             validationSchema={Yup.object().shape({
-              email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+              username: Yup.string().max(255).required('Username is required'),
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={(values) => {
-              //dispatch(obtenerToken(values))
-              navigate('/home')
+              dispatch(obtenerToken(values))
             }}
           >
             {({
@@ -82,16 +82,16 @@ const IndexPage = () => {
                 </Box>
                   
                 <TextField
-                  error={Boolean(touched.email && errors.email)}
+                  error={Boolean(touched.username && errors.username)}
                   fullWidth
-                  helperText={touched.email && errors.email}
-                  label="Email Address"
+                  helperText={touched.username && errors.username}
+                  label="Username"
                   margin="normal"
-                  name="email"
+                  name="username"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  type="email"
-                  value={values.email}
+                  type="text"
+                  value={values.username}
                   variant="outlined"
                 />
                 <TextField

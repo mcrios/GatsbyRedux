@@ -21,7 +21,7 @@ import {
   colors
 } from '@material-ui/core'
 import { Edit, PlusCircle, Trash } from 'react-feather'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import * as Yup from 'yup';
 import { Formik } from 'formik'
 import { agregarServer, cargarUrlServer, eliminarServer, actualizarServer } from '../../redux/serverReducer';

@@ -1,11 +1,13 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
+import alertReducer from './alertReducer';
 import serverReducer from './serverReducer';
 import usuarioReducer from './usuarioReducer'
 
 const rootReducer = combineReducers({
-    // usuario: usuarioReducer,
-    server: serverReducer
+    usuario: usuarioReducer,
+    server: serverReducer,
+    alert: alertReducer
 })
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;

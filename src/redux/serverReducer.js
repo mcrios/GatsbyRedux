@@ -80,7 +80,10 @@ export default function serverReducer(state = dataInicial, action) {
 export const cargarEstados = () => async (dispatch, getState) => {
     await axiosConfig({
         method: 'get',
-        url: '/monitor/getEstado'
+        url: '/monitor/getEstado',
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: LOAD,
@@ -96,7 +99,10 @@ export const cargarServidores = () => async (dispatch, getState) => {
 
     await axiosConfig({
         method: 'get',
-        url: '/monitor/getServer'
+        url: '/monitor/getServer',
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: LOADSERVERS,
@@ -113,6 +119,9 @@ export const cargarUrlServer = (idser) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'get',
         url: '/monitor/getUrlServer',
+        headers: {
+            Authorization: localStorage.getItem('token')
+        },
         params: { "idser": idser }
     }).then(res => {
         if (res.data.data.length <= 0) {
@@ -142,7 +151,10 @@ export const agregarServer = (server) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'post',
         url: '/monitor/addServer',
-        params: server
+        params: server,
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: ADD,
@@ -159,7 +171,10 @@ export const actualizarServer = (server) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'post',
         url: '/monitor/updateServer',
-        params: server
+        params: server,
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: UPDATE,
@@ -176,7 +191,10 @@ export const eliminarServer = (idser) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'post',
         url: '/monitor/deleteServer',
-        params: { "idser": idser }
+        params: { "idser": idser },
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: DELETE,
@@ -193,7 +211,10 @@ export const agregarUrlServer = (url) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'post',
         url: '/monitor/addUrlServer',
-        params: url
+        params: url,
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: ADDURL,
@@ -210,7 +231,10 @@ export const actualizarUrlServer = (url) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'post',
         url: '/monitor/updateUrlServer',
-        params: url
+        params: url,
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: UPDATEURL,
@@ -227,7 +251,10 @@ export const eliminarUrlServer = (idcon) => async (dispatch, getState) => {
     await axiosConfig({
         method: 'post',
         url: '/monitor/deleteUrlServer',
-        params: { "idcon": idcon }
+        params: { "idcon": idcon },
+        headers: {
+            Authorization: localStorage.getItem('token')
+        }
     }).then(res => {
         dispatch({
             type: DELETEURL,

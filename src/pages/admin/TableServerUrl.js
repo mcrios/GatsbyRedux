@@ -63,10 +63,13 @@ const TableServerUrl = ({ data, server }) => {
 
   return (
     <Card >
-      <CardHeader title="Url por servidor" className={classes.headDark}
+      <CardHeader title={"Url configuradas para " + ((typeof data !== 'undefined' && data.length > 0) ?
+       data[0].nombre : "")} className={classes.headDark}
         action={
           <Tooltip title="Agregar Server">
             <IconButton variant="contained" color="secondary" onClick={() => {
+              if(typeof data === 'undefined' )
+                return
               setOpenAdd(true)
             }}>
               <PlusCircle />
@@ -80,16 +83,10 @@ const TableServerUrl = ({ data, server }) => {
           <TableHead>
             <TableRow>
               <TableCell className={classes.headTable}>
-                SERVER
-              </TableCell>
-              <TableCell className={classes.headTable}>
                 TIPO
               </TableCell>
               <TableCell className={classes.headTable}>
                 URL
-              </TableCell>
-              <TableCell className={classes.headTable}>
-                USUARIO
               </TableCell>
               <TableCell className={classes.headTable}>
                 ACTION
@@ -103,16 +100,10 @@ const TableServerUrl = ({ data, server }) => {
                 key={key.idcon}
               >
                 <TableCell className={classes.row}>
-                  {key.nombre}
-                </TableCell>
-                <TableCell className={classes.row}>
                   {key.tipo}
                 </TableCell>
                 <TableCell className={classes.row} width="200px">
                   {key.url}
-                </TableCell>
-                <TableCell className={classes.row}>
-                  {key.usuario}
                 </TableCell>
                 <TableCell className={classes.row} width="100px">
                   <IconButton color="secondary" onClick={() => {

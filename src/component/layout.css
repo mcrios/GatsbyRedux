@@ -14,7 +14,7 @@ body {
 }
 @media only screen and (min-width: 1280px) {
     .margin-menu {
-        margin-left: 20%;
+        margin-left: 18%;
     }
 }
 
@@ -32,4 +32,14 @@ body {
     font-weight: 500;
     line-height: 1.167;
     letter-spacing: -0.06px;
+}
+
+.MuiTableRow-root.Mui-selected, .MuiTableRow-root.Mui-selected:hover {
+    background-color: rgb(176 192 243) !important;
+}
+
+.MuiSnackbarContent-root {
+    background-color: #990015 !important;
+    font-size: 16px !important;
+    text-align: center !important;
 }

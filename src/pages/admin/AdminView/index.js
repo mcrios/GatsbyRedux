@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core'
 import Page from '../../../component/Page'
 import { useDispatch, useSelector } from 'react-redux'
-import {cargarServidores, showLoader} from '../../../redux/serverReducer'
+import { cargarServidores, showLoader } from '../../../redux/serverReducer'
 import TableServer from '../TableServer'
 import TableServerUrl from '../TableServerUrl'
 import HashLoader from 'react-spinners/HashLoader'
@@ -27,13 +27,13 @@ const AdminServer = () => {
   const loading = useSelector((store) => store.server.loading)
 
   useEffect(() => {
-    if(typeof servidores === 'undefined' || servidores.length <= 0){
+    if (typeof servidores === 'undefined' || servidores.length <= 0) {
       dispatch(showLoader())
     }
     dispatch(cargarServidores())
   }, [])
 
-  
+
   if (loading)
     return (
       <HashLoader color="#4A90E2" loading={loading} size={80} css={{
@@ -44,38 +44,38 @@ const AdminServer = () => {
       }} />
     )
   else
-  return (
-    <Page
-      className={classes.root}
-      title="Administraci&oacute;n"
-    >
-      <Container maxWidth={false}>
-        <Grid
-          container
-          spacing={2}
-        >
+    return (
+      <Page
+        className={classes.root}
+        title="Administraci&oacute;n"
+      >
+        <Container maxWidth={false}>
           <Grid
-            item
-            lg={5}
-            md={5}
-            xl={3}
-            xs={5}
+            container
+            spacing={2}
           >
-            <TableServer data={servidores} />
+            <Grid
+              item
+              lg={6}
+              md={6}
+              xl={6}
+              xs={6}
+            >
+              <TableServer data={servidores} />
+            </Grid>
+            <Grid
+              item
+              lg={6}
+              md={6}
+              xl={6}
+              xs={6}
+            >
+              <TableServerUrl data={url} server={servidores} />
+            </Grid>
           </Grid>
-          <Grid
-            item
-            lg={7}
-            md={7}
-            xl={3}
-            xs={7}
-          >
-            <TableServerUrl data={url} server={servidores} />
-          </Grid>
-        </Grid>
-      </Container>
-    </Page>
-  );
+        </Container>
+      </Page>
+    );
 };
 
 export default AdminServer

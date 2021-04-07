@@ -1,9 +1,9 @@
 import { navigate } from "gatsby-link"
 import React from "react"
 import DashboardLayout from '../layout/DashboardLayout'
-import AdminServer from "./admin/AdminView"
+import AdminUsuario from "./usuario/AdminUserView"
 
-const AdminPage = () => {
+const UsuarioPage = () => {
     if (typeof window !== `undefined` && localStorage.getItem('token') === null) {
         return (
             <div>
@@ -15,10 +15,10 @@ const AdminPage = () => {
             <div style={{ backgroundColor: '#f4f6f8' }}>
                 <DashboardLayout />
                 <div className="margin-menu">
-                    <AdminServer />
+                    <AdminUsuario />
                 </div>
             </div>
         )
     }
 }
-export default AdminPage
+export default UsuarioPage
