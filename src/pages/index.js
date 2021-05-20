@@ -3,17 +3,19 @@ import {
   Box,
   Button,
   Container,
-  Link,
   TextField,
   Typography,
-  makeStyles
+  makeStyles,
+  Snackbar,
+  IconButton
 } from '@material-ui/core'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
-import { navigate } from 'gatsby'
 import Page from '../component/Page'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { obtenerToken } from '../redux/usuarioReducer'
+import { X } from 'react-feather'
+import { hideAlert } from '../redux/alertReducer'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +30,8 @@ const IndexPage = () => {
 
   const classes = useStyles()
   const dispatch = useDispatch()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const alert = useSelector((store) => store.alert.data)
   const [usuario] = useState({
     username: 'mcruz',
     password: '12345'
@@ -52,7 +56,8 @@ const IndexPage = () => {
               password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={(values) => {
-              dispatch(obtenerToken(values))
+              setIsSubmitting(true)
+              dispatch(obtenerToken(values, setIsSubmitting))
             }}
           >
             {({
@@ -61,7 +66,6 @@ const IndexPage = () => {
               handleBlur,
               handleSubmit,
               handleChange,
-              isSubmitting,
               touched
             }) => (
               <form onSubmit={handleSubmit}>
@@ -80,7 +84,7 @@ const IndexPage = () => {
                     Sign in on the internal platform
                   </Typography>
                 </Box>
-                  
+
                 <TextField
                   error={Boolean(touched.username && errors.username)}
                   fullWidth
@@ -116,30 +120,33 @@ const IndexPage = () => {
                     type="submit"
                     variant="contained"
                   >
-                    Sign in now
+                    Sign in
                   </Button>
                 </Box>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  <Link
-                    color="primary"
-                    onClick={() => {
-                      navigate('/Register/')
-                    }}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                  >
-                    Don't have an account? Sign up
-                  </Link>
-                </Typography>
               </form>
             )}
           </Formik>
         </Container>
+        <div>
+          <Snackbar
+            anchorOrigin={{
+              vertical: typeof alert !== 'undefined' ? alert.vertical : "top",
+              horizontal: typeof alert !== 'undefined' ? alert.horizontal : "center"
+            }}
+            autoHideDuration={6000}
+            message={typeof alert !== 'undefined' ? alert.message : ""}
+            open={typeof alert !== 'undefined' ? alert.open : false}
+            onClose={() => { dispatch(hideAlert()) }}
+            action={
+              <React.Fragment>
+                <IconButton size="small" aria-label="close" color="inherit"
+                  onClick={() => { dispatch(hideAlert()) }}>
+                  <X size="20" />
+                </IconButton>
+              </React.Fragment>
+            }
+          />
+        </div>
       </Box>
     </Page>
   )

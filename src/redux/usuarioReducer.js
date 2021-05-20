@@ -15,6 +15,7 @@ const DELETE_USER = "DELETE_USER"
 const DELETE_ROL_USER = "DELETE_ROL_USER"
 const DELETE_ROL = "DELETE_ROL"
 const DELETE_OPCION_ROL = "DELETE_OPCION_ROL"
+const DELETE_MENU = "DELETE_MENU"
 const UPDATE_USER = "UPDATE_USER"
 const LOAD_USER = "LOAD_USER"
 const LOAD_ACCESOS_USER = "LOAD_ACCESOS_USER"
@@ -39,29 +40,19 @@ export default function usuarioReducer(state = dataInicial, action) {
         case ADD_ROL:
             return { ...state, roles: action.payload }
         case ADD_ROL_USER:
-            return {
-                ...state, rolesUsuario: action.payload.roles,
-                rolesAvail: state.rolesAvail.filter((rol) => rol.codrol !== action.payload.codrol)
-            }
+            return { ...state, rolesUsuario: action.payload.roles }
         case ADD_OPCION_ROL:
-            return {
-                ...state, opcionesRol: action.payload.opcionesRol,
-                opcionesRolAvail: state.opcionesRolAvail.filter((opc) => opc.idopc !== action.payload.idopc)
-            }
+            return { ...state, opcionesRol: action.payload.opcionesRol }
         case DELETE_USER:
             return { ...state, usuarios: state.usuarios.filter((user) => user.idusr !== action.payload) }
         case DELETE_ROL:
             return { ...state, roles: state.roles.filter((rol) => rol.codrol !== action.payload) }
         case DELETE_ROL_USER:
-            return {
-                ...state, rolesAvail: action.payload.rolesAvail,
-                rolesUsuario: state.rolesUsuario.filter((user) => user.idusrl !== action.payload.idusrl)
-            }
+            return { ...state, rolesUsuario: action.payload.rolesUsuario }
         case DELETE_OPCION_ROL:
-            return {
-                ...state, opcionesRolAvail: action.payload.opcionesRolAvail,
-                opcionesRol: state.opcionesRol.filter((opc) => opc.idopr !== action.payload.idopr)
-            }
+            return { ...state, opcionesRol: action.payload.opcionesRol }
+        case DELETE_MENU:
+            return { ...state, opcionesRol: action.payload.opcionesRol }
         case CONFIG_USER:
             return { ...state, usuarioConfig: action.payload }
         case UPDATE_USER:
@@ -95,7 +86,7 @@ export default function usuarioReducer(state = dataInicial, action) {
         case LOAD_ROLES_AVAIL:
             return { ...state, rolesAvail: action.payload }
         case LOAD_ACCESOS_USER:
-            return {...state, accesosUsuario: action.payload}
+            return { ...state, accesosUsuario: action.payload }
         case COUNT_USER:
             return { ...state, contador: action.payload }
         case SHOWLOADER:
@@ -110,7 +101,7 @@ export default function usuarioReducer(state = dataInicial, action) {
 }
 
 //acciones
-export const obtenerToken = (data) => async (dispatch, getState) => {
+export const obtenerToken = (data, isSubmiting) => async (dispatch, getState) => {
 
     const params = new FormData()
     params.append("username", data.username)
@@ -126,7 +117,8 @@ export const obtenerToken = (data) => async (dispatch, getState) => {
             navigate('/home/')
         })
         .catch(error => {
-            console.log(error.response);
+            isSubmiting(false)
+            dispatch(showAlert(typeof error.response != 'undefined' ? error.response.data.mensajeRetorno : "OCURRIO UN ERROR, VUELVA A INTENTARLO"))
             navigate('/')
         })
 }
@@ -225,6 +217,10 @@ export const cargarOpcionesRoles = (codrol) => async (dispatch, getState) => {
         params: { 'codrol': codrol }
     }).then(res => {
         dispatch({
+            type: SETCODROL,
+            payload: codrol
+        })
+        dispatch({
             type: LOAD_OPCIONES_ROL,
             payload: res.data.data
         })
@@ -318,7 +314,7 @@ export const agregarRol = (rol) => async (dispatch, getState) => {
 }
 
 export const agregarOpcionRol = (opcionRol) => async (dispatch, getState) => {
-
+    console.log(opcionRol)
     await axiosConfig({
         method: 'post',
         url: '/usuario/addOpcionRol',
@@ -348,9 +344,30 @@ export const agregarRolUsuario = (rolUser) => async (dispatch, getState) => {
         },
         params: rolUser
     }).then(res => {
+        console.log(res);
         dispatch({
             type: ADD_ROL_USER,
             payload: { "roles": res.data.data, "codrol": rolUser.codrol }
+        })
+    }).catch(error => {
+        console.log(error);
+        //navigate('/')
+    })
+}
+
+export const agregarMenu = (menu) => async (dispatch, getState) => {
+
+    await axiosConfig({
+        method: 'post',
+        url: '/usuario/addMenu',
+        headers: {
+            Authorization: localStorage.getItem('token')
+        },
+        params: menu
+    }).then(res => {
+        dispatch({
+            type: LOAD_OPCIONES_ROL,
+            payload: res.data.data
         })
     }).catch(error => {
         console.log(error.response);
@@ -410,11 +427,11 @@ export const eliminarRolUsuario = (rol) => async (dispatch, getState) => {
     }).then(res => {
         dispatch({
             type: DELETE_ROL_USER,
-            payload: { "idusrl": rol.idusrl, "rolesAvail": res.data.data }
+            payload: { "idusrl": rol.idusrl, "rolesUsuario": res.data.data }
         })
     }).catch(error => {
-        console.log(error.response);
-        navigate('/')
+        console.log(error);
+        dispatch(showAlert("Error: " + typeof error.response !== 'undefined' && typeof error !== 'undefined' ? error.response.data : "NO SE LOGRO COMPLETAR SU PETICION"))
     })
 }
 
@@ -430,7 +447,7 @@ export const eliminarOpcionRol = (opcionRol) => async (dispatch, getState) => {
     }).then(res => {
         dispatch({
             type: DELETE_OPCION_ROL,
-            payload: { "idopr": opcionRol.idopr, "opcionesRolAvail": res.data.data }
+            payload: { "idopr": opcionRol.idopr, "opcionesRol": res.data.data }
         })
     }).catch(error => {
         console.log(error.response);
@@ -453,6 +470,28 @@ export const eliminarRol = (codrol) => async (dispatch, getState) => {
             payload: codrol
         })
         dispatch(showAlert("Rol eliminado exitosamente"))
+    }).catch(error => {
+        console.log(error.response)
+        dispatch(showAlert("Error: " + error.response.data))
+        //navigate('/')
+    })
+}
+
+export const eliminarMenu = (menu) => async (dispatch, getState) => {
+
+    await axiosConfig({
+        method: 'post',
+        url: `/usuario/deleteMenu`,
+        headers: {
+            Authorization: localStorage.getItem('token')
+        },
+        params: menu
+    }).then(res => {
+        dispatch({
+            type: DELETE_MENU,
+            payload: { "opcionesRol": res.data.data }
+        })
+        dispatch(showAlert("Menu eliminado exitosamente"))
     }).catch(error => {
         console.log(error.response)
         dispatch(showAlert("Error: " + error.response.data))

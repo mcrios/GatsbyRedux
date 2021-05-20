@@ -137,16 +137,7 @@ const NavBar = ({ onMobileClose, openMobile, accesos }) => {
               title={item.titulo}
               icon={item.icono}
             />
-          )) :
-            <NavItem
-              onClick={() => {
-                localStorage.removeItem('token')
-              }}
-              href="/"
-              key="Salir"
-              title="Salir"
-              icon="sign-out-alt"
-            />}
+          )) :<></>}
              <NavItem
               onClick={() => {
                 localStorage.removeItem('token')

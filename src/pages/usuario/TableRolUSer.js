@@ -1,34 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Box,
-  Button,
   Card,
   CardHeader,
-  Dialog,
-  DialogActions,
-  DialogContent,
   Divider,
-  IconButton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  Tooltip,
-  Typography,
   makeStyles,
   colors,
   TableContainer,
   Paper,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Input
+  Switch
 } from '@material-ui/core'
-import { PlusCircle, Trash } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
-import { Formik } from 'formik'
 import { agregarRolUsuario, eliminarRolUsuario } from '../../redux/usuarioReducer'
 
 const useStyles = makeStyles((theme) => ({
@@ -57,27 +44,13 @@ const useStyles = makeStyles((theme) => ({
 
 const TableRol = ({ rolesAvail, rolesUser }) => {
   const classes = useStyles()
-  const [openAdd, setOpenAdd] = useState(false)
   const idusr = useSelector(store => store.usuario.idusr)
   const dispatch = useDispatch()
 
 
   return (
     <Card >
-      <CardHeader title={"Roles por Usuario"} className={classes.headDark}
-        action={
-          <Tooltip title="Agregar Rol">
-            <IconButton variant="contained" color="secondary" onClick={() => {
-              console.log(idusr);
-              if(typeof idusr === 'undefined')
-                return 
-              setOpenAdd(true)
-            }}>
-              <PlusCircle />
-            </IconButton>
-          </Tooltip>
-        }
-      />
+      <CardHeader title={"Roles por Usuario"} className={classes.headDark} />
       <Divider />
       <Box >
         <TableContainer component={Paper}>
@@ -85,14 +58,14 @@ const TableRol = ({ rolesAvail, rolesUser }) => {
             <TableHead>
               <TableRow>
                 <TableCell className={classes.headTable}>
-                  CODROL
-              </TableCell>
+                  CODIGO
+                </TableCell>
                 <TableCell className={classes.headTable}>
                   DESCRIPCION
-              </TableCell>
+                </TableCell>
                 <TableCell className={classes.headTable}>
-                  ACTION
-              </TableCell>
+                  ESTADO
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -108,11 +81,21 @@ const TableRol = ({ rolesAvail, rolesUser }) => {
                     {rol.nombre}
                   </TableCell>
                   <TableCell className={classes.row}>
-                    <IconButton color="secondary" onClick={() => {
-                      dispatch(eliminarRolUsuario(rol))
-                    }}>
-                      <Trash size="15" />
-                    </IconButton>
+                    <Switch
+                      checked={rol.activo}
+                      color="primary"
+                      name="activo"
+                      onClick={
+                        () => {
+                          if (rol.activo) {
+                            dispatch(eliminarRolUsuario(rol))
+                          } else {
+                            dispatch(agregarRolUsuario({ "idusr": idusr, "codrol": rol.codrol }))
+                          }
+                        }
+                      }
+                      inputProps={{ 'aria-label': 'primary checkbox' }}
+                    />
                   </TableCell>
                 </TableRow>
               )) :
@@ -122,80 +105,6 @@ const TableRol = ({ rolesAvail, rolesUser }) => {
             </TableBody>
           </Table>
         </TableContainer>
-
-        {/* Modal for add rol */}
-        <Dialog open={openAdd} onClose={() => { setOpenAdd(false) }} aria-labelledby="form-add-rol">
-          <DialogContent>
-            <Formik
-              initialValues={{
-                codrol: '',
-                idusr: idusr
-              }}
-              onSubmit={(values) => {
-                dispatch(agregarRolUsuario(values))
-                setOpenAdd(false)
-              }}
-            >
-              {({
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                touched,
-                values
-              }) => (
-                <form onSubmit={handleSubmit}>
-                  <Box mb={3}>
-                    <Typography
-                      color="textPrimary"
-                      variant="h5"
-                      align="center"
-                    >
-                      Agregar rol
-                  </Typography>
-                  </Box>
-
-                  <FormControl fullWidth className={classes.formControl}>
-                    <InputLabel >Seleccione </InputLabel>
-                    <Select
-                      error={Boolean(touched.codrol && errors.codrol)}
-                      fullWidth
-                      id="codrol"
-                      value={values.codrol}
-                      name="codrol"
-                      onChange={handleChange}
-                      input={<Input />}
-                    >
-                      {typeof rolesAvail !== 'undefined' && rolesAvail.length > 0 ? rolesAvail.map((r) => (
-                        <MenuItem value={r.codrol} key={r.codrol} selected>{r.nombre}</MenuItem>
-                      )) : <MenuItem value="" > Ya posee todos los roles </MenuItem>}
-                    </Select>
-                  </FormControl>
-                  <Box my={2}>
-                    <Button
-                      color="primary"
-                      disabled={isSubmitting}
-                      fullWidth
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                    >
-                      Agregar
-                  </Button>
-                  </Box>
-                </form>
-              )}
-            </Formik>
-          </DialogContent>
-
-          <DialogActions>
-            <Button onClick={() => { setOpenAdd(false) }} color="secondary" variant="outlined">
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
-
       </Box>
     </Card>
   )

@@ -64,11 +64,11 @@ const TableServerUrl = ({ data, server }) => {
   return (
     <Card >
       <CardHeader title={"Url configuradas para " + ((typeof data !== 'undefined' && data.length > 0) ?
-       data[0].nombre : "")} className={classes.headDark}
+        data[0].nombre : "")} className={classes.headDark}
         action={
           <Tooltip title="Agregar Server">
             <IconButton variant="contained" color="secondary" onClick={() => {
-              if(typeof data === 'undefined' )
+              if (typeof data === 'undefined')
                 return
               setOpenAdd(true)
             }}>
@@ -89,6 +89,9 @@ const TableServerUrl = ({ data, server }) => {
                 URL
               </TableCell>
               <TableCell className={classes.headTable}>
+                FileSystem
+              </TableCell>
+              <TableCell className={classes.headTable}>
                 ACTION
               </TableCell>
             </TableRow>
@@ -104,6 +107,9 @@ const TableServerUrl = ({ data, server }) => {
                 </TableCell>
                 <TableCell className={classes.row} width="200px">
                   {key.url}
+                </TableCell>
+                <TableCell className={classes.row} width="200px">
+                  {key.filesystem}
                 </TableCell>
                 <TableCell className={classes.row} width="100px">
                   <IconButton color="secondary" onClick={() => {
@@ -121,7 +127,7 @@ const TableServerUrl = ({ data, server }) => {
               </TableRow>
             )) :
               <TableRow>
-                <TableCell colSpan="5" style={{textAlign: 'center'}}> A&uacute;n no hay informaci&oacute;n</TableCell>
+                <TableCell colSpan="5" style={{ textAlign: 'center' }}> A&uacute;n no hay informaci&oacute;n</TableCell>
               </TableRow>}
           </TableBody>
         </Table>
@@ -131,18 +137,20 @@ const TableServerUrl = ({ data, server }) => {
           <DialogContent>
             <Formik
               initialValues={{
-                tipo: '',
+                tipo: 'SSH',
                 url: '',
-                idser: typeof data !== 'undefined' &&  typeof data[0] !== 'undefined' ? data[0].idser : idser,
+                idser: typeof data !== 'undefined' && typeof data[0] !== 'undefined' ? data[0].idser : idser,
                 usuario: '',
-                contrasena: ''
+                contrasena: '',
+                filesystem: ''
               }}
               validationSchema={
                 Yup.object().shape({
                   tipo: Yup.string().max(255).required('Tipo Url is required'),
                   url: Yup.string().max(255).required('Url is required'),
                   usuario: Yup.string().max(255).required('Usuario is required'),
-                  contrasena: Yup.string().max(255).required('Contraseña is required')
+                  contrasena: Yup.string().max(255).required('Contraseña is required'),
+                  filesystem: Yup.string().max(255).required('Filesystem is required')
                 })
               }
               onSubmit={(values) => {
@@ -177,7 +185,7 @@ const TableServerUrl = ({ data, server }) => {
                       item
                       lg={12}
                       md={12}
-                      xl={6}
+                      xl={12}
                       xs={12}
                     >
                       <TextField
@@ -198,7 +206,7 @@ const TableServerUrl = ({ data, server }) => {
                       item
                       lg={6}
                       md={6}
-                      xl={4}
+                      xl={6}
                       xs={6}
                     >
                       <Select
@@ -212,7 +220,7 @@ const TableServerUrl = ({ data, server }) => {
                         onChange={handleChange}
                         variant="outlined"
                       >
-                        <MenuItem value="SSH">SSH</MenuItem>
+                        <MenuItem value="SSH" >SSH</MenuItem>
                         <MenuItem value="JDBC">JDBC</MenuItem>
                       </Select>
                     </Grid>
@@ -221,7 +229,7 @@ const TableServerUrl = ({ data, server }) => {
                       item
                       lg={6}
                       md={6}
-                      xl={4}
+                      xl={6}
                       xs={6}
                     >
                       <Select
@@ -235,7 +243,7 @@ const TableServerUrl = ({ data, server }) => {
                         onChange={handleChange}
                         variant="outlined"
                       >
-                        {typeof data !== 'undefined' && data.length > 0 ? data.slice(0,1).map((servidor) => (
+                        {typeof data !== 'undefined' && data.length > 0 ? data.slice(0, 1).map((servidor) => (
                           <MenuItem value={servidor.idser} key={servidor.idser}>{servidor.nombre}</MenuItem>
                         )) : typeof server !== 'undefined' ? server.filter((ser) => ser.idser === idser).map((servidor) => (
                           <MenuItem value={servidor.idser} key={servidor.idser}>{servidor.nombre}</MenuItem>
@@ -247,7 +255,7 @@ const TableServerUrl = ({ data, server }) => {
                       item
                       lg={6}
                       md={6}
-                      xl={4}
+                      xl={6}
                       xs={6}
                     >
                       <TextField
@@ -268,7 +276,7 @@ const TableServerUrl = ({ data, server }) => {
                       item
                       lg={6}
                       md={6}
-                      xl={4}
+                      xl={6}
                       xs={6}
                     >
                       <TextField
@@ -282,6 +290,26 @@ const TableServerUrl = ({ data, server }) => {
                         onBlur={handleBlur}
                         onChange={handleChange}
                         value={values.contrasena}
+                        variant="outlined"
+                      />
+                    </Grid>
+                    <Grid
+                      item
+                      lg={12}
+                      md={12}
+                      xl={12}
+                      xs={12}
+                    >
+                      <TextField
+                        error={Boolean(touched.filesystem && errors.filesystem)}
+                        helperText={touched.filesystem && errors.filesystem}
+                        fullWidth
+                        label="Filesystem"
+                        margin="normal"
+                        name="filesystem"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.filesystem}
                         variant="outlined"
                       />
                     </Grid>
@@ -313,14 +341,15 @@ const TableServerUrl = ({ data, server }) => {
         {/* Modal for edit server */}
         <Dialog open={open} onClose={() => { setOpen(false) }} aria-labelledby="form-add-server">
           <DialogContent>
-          <Formik
+            <Formik
               initialValues={urlServer}
               validationSchema={
                 Yup.object().shape({
                   tipo: Yup.string().max(255).required('Tipo Url is required'),
                   url: Yup.string().max(255).required('Url is required'),
                   usuario: Yup.string().max(255).required('Usuario is required'),
-                  contrasena: Yup.string().max(255).required('Contraseña is required')
+                  contrasena: Yup.string().max(255).required('Contraseña is required'),
+                  filesystem: Yup.string().max(255)
                 })
               }
               onSubmit={(values) => {
@@ -413,7 +442,7 @@ const TableServerUrl = ({ data, server }) => {
                         onChange={handleChange}
                         variant="outlined"
                       >
-                        {typeof data !== 'undefined' ? data.slice(0,1).map((servidor) => (
+                        {typeof data !== 'undefined' ? data.slice(0, 1).map((servidor) => (
                           <MenuItem value={servidor.idser} key={servidor.idser}>{servidor.nombre}</MenuItem>
                         )) : <MenuItem value="0">Seleccione Servidor</MenuItem>}
                       </Select>
@@ -461,6 +490,26 @@ const TableServerUrl = ({ data, server }) => {
                         variant="outlined"
                       />
                     </Grid>
+                    <Grid
+                      item
+                      lg={12}
+                      md={12}
+                      xl={12}
+                      xs={12}
+                    >
+                      <TextField
+                        error={Boolean(touched.filesystem && errors.filesystem)}
+                        helperText={touched.filesystem && errors.filesystem}
+                        fullWidth
+                        label="Filesystem"
+                        margin="normal"
+                        name="filesystem"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.filesystem}
+                        variant="outlined"
+                      />
+                    </Grid>                    
                   </Grid>
                   <Box my={2}>
                     <Button

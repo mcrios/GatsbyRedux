@@ -18,7 +18,7 @@ module.exports = {
         background_color: `#b90000`,
         theme_color: `#b90000`,
         display: `standalone`,
-        icon: "src/images/icon.png",
+        icon: "src/images/premium-logo.png",
       },
     },
     {

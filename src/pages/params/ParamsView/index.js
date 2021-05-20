@@ -9,12 +9,8 @@ import Page from '../../../component/Page'
 import { useDispatch, useSelector } from 'react-redux'
 import { showLoader } from '../../../redux/serverReducer'
 import HashLoader from 'react-spinners/HashLoader'
-import TableUser from '../TableUser'
 import { cargarRoles, cargarUsuarios } from '../../../redux/usuarioReducer'
-import TableRolUser from '../TableRolUSer'
 import { List, Users } from 'react-feather'
-import TableRol from '../TableRol'
-import TableAccesosRol from '../TableAccesosRol'
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -24,15 +20,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const AdminUsuario = () => {
+const Params = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const usuarios = useSelector(store => store.usuario.usuarios)
-  const rolesUser = useSelector(store => store.usuario.rolesUsuario)
-  const rolesAvial = useSelector(store => store.usuario.rolesAvail)
-  const roles = useSelector(store => store.usuario.roles)
-  const opcRol = useSelector(store => store.usuario.opcionesRol)
-  const opcAvail = useSelector(store => store.usuario.opcionesRolAvail)
   const loading = useSelector((store) => store.usuario.loading)
 
   const [value, setValue] = React.useState("usuario");
@@ -63,7 +54,7 @@ const AdminUsuario = () => {
     return (
       <Page
         className={classes.root}
-        title="Usuarios"
+        title="Parametros"
       >
         <Container maxWidth={false}>
           <Grid
@@ -90,59 +81,9 @@ const AdminUsuario = () => {
               </Button>
             </Grid>
           </Grid>
-          <div hidden={value !== "usuario"}>
-            <Grid
-              container
-              spacing={1}
-            >
-              <Grid
-                item
-                lg={8}
-                md={8}
-                xl={8}
-                xs={8}
-              >
-                <TableUser data={usuarios} />
-              </Grid>
-              <Grid
-                item
-                lg={4}
-                md={4}
-                xl={4}
-                xs={4}
-              >
-                <TableRolUser rolesUser={rolesUser} rolesAvail={rolesAvial} />
-              </Grid>
-            </Grid>
-          </div>
-          <div hidden={value !== "roles"}>
-            <Grid
-              container
-              spacing={1}
-            >
-              <Grid
-                item
-                lg={4}
-                md={4}
-                xl={4}
-                xs={4}
-              >
-                <TableRol roles={roles} />
-              </Grid>
-              <Grid
-                item
-                lg={8}
-                md={8}
-                xl={8}
-                xs={8}
-              >
-                <TableAccesosRol accesos={opcRol} accesosAvail={opcAvail} />
-              </Grid>
-            </Grid>
-          </div>
         </Container>
       </Page>
     );
 };
 
-export default AdminUsuario
+export default Params

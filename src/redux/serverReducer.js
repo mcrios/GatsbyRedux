@@ -57,8 +57,9 @@ export default function serverReducer(state = dataInicial, action) {
                             ...server,
                             url: action.payload.url,
                             tipo: action.payload.tipo,
-                            contrasena: action.payload.contrasena,
-                            usuario: action.payload.usuario
+                            contrasena: action.payload.contrasena, 
+                            usuario: action.payload.usuario,
+                            filesystem: action.payload.filesystem
                         }
                     } else {
                         return server

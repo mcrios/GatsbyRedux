@@ -12,10 +12,12 @@ import HighchartsStockChart from "highcharts";
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
+    backgroundColor: '#0D2430',
+    color: '#FFFFFF'
   }
 }));
 
-const Chart = ({ db, name, className, ...rest }) => {
+const ChartDark = ({ db, name, className, ...rest }) => {
 
   const options = {
     chart: {
@@ -26,10 +28,12 @@ const Chart = ({ db, name, className, ...rest }) => {
       style: {
         fontFamily: 'Hind',
       },
+      backgroundColor: '#0D2430'
     },
     title: {
       text: name,
       style: {
+        color: '#FFFFFF ',
         font: '"Hind", sans-serif'
       }
     },
@@ -55,7 +59,7 @@ const Chart = ({ db, name, className, ...rest }) => {
       labelFormatter: function () {
         return this.name + ': ' + this.y + ' GB';
       },
-      itemStyle: {fontSize: '14px', fontFamily: 'Hind'}
+      itemStyle: {color: '#FFFFFF', fontSize: '14px', fontFamily: 'Hind'}
     },
     credits: {
       enabled: false
@@ -67,12 +71,12 @@ const Chart = ({ db, name, className, ...rest }) => {
         data: [
           {
             name: "Disponible",
-            color: "#4285f4",
+            color: "#47B865",
             y: Number(typeof db !== 'undefined' ? parseFloat(db["AVAIL"] / 1024 / 1024).toFixed(2) : 0)
           },
           {
             name: "Usada",
-            color: "#FB306A",
+            color: "#C40039",
             y: Number(typeof db !== 'undefined' ? parseFloat(db["USED"] / 1024 / 1024).toFixed(2) : 0)
           },
         ],
@@ -102,8 +106,8 @@ const Chart = ({ db, name, className, ...rest }) => {
   )
 }
 
-Chart.propTypes = {
+ChartDark.propTypes = {
   className: PropTypes.string,
 }
 
-export default Chart
+export default ChartDark

@@ -25,7 +25,7 @@ import { PlusCircle, Trash, X } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup';
 import { Formik } from 'formik'
-import { agregarRol, cargarOpcionesAvial, cargarOpcionesRoles, eliminarRol } from '../../redux/usuarioReducer'
+import { agregarRol, cargarOpcionesRoles, eliminarRol } from '../../redux/usuarioReducer'
 import { hideAlert } from '../../redux/alertReducer'
 
 const useStyles = makeStyles(() => ({
@@ -65,11 +65,13 @@ const TableRolUser = ({ roles }) => {
       <CardHeader title={"Roles"} className={classes.headDark}
         action={
           <Tooltip title="Agregar Rol">
-            <IconButton variant="contained" color="secondary" onClick={() => {
-              setOpenAdd(true)
-            }}>
-              <PlusCircle />
-            </IconButton>
+            <Button variant="text" color="secondary"
+                size="small" style={{ marginLeft: '10px', marginTop: '10px' }}
+                startIcon={<PlusCircle />}
+                onClick={() => {
+                  setOpenAdd(true)
+                }}>
+              </Button>
           </Tooltip>
         }
       />
@@ -99,14 +101,12 @@ const TableRolUser = ({ roles }) => {
                 <TableCell className={classes.row} onClick={() => {
                   dispatch(cargarOpcionesRoles(rol.codrol))
                   setR({ ...r, codrol: rol.codrol })
-                  dispatch(cargarOpcionesAvial(rol.codrol))
                 }}>
                   {rol.codrol}
                 </TableCell>
                 <TableCell className={classes.row} onClick={() => {
                   dispatch(cargarOpcionesRoles(rol.codrol))
                   setR({ ...r, codrol: rol.codrol })
-                  dispatch(cargarOpcionesAvial(rol.codrol))
                 }}>
                   {rol.nombre}
                 </TableCell>

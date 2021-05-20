@@ -36,7 +36,7 @@ const TableUsers = ({ data }) => {
    
   return (
     <Card>
-      <CardHeader title="Estado Servidores"
+      <CardHeader title="Estado de disco de Servidores"
         action={
           <Tooltip title="Agregar Server">
           <IconButton variant="contained" color="primary" onClick={() => {
@@ -68,39 +68,35 @@ const TableUsers = ({ data }) => {
                 USED
               </TableCell>
               <TableCell>
-                URL
-              </TableCell>
-              <TableCell>
                 % USE
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {Object.keys(data).map((key) => (
+            {Object.keys(data).map((db) => (
+              typeof data[db].listFileSystem !== 'undefined' && data[db].listFileSystem !== null ?
+              Object.keys(data[db].listFileSystem).map((fs) => (
               <TableRow
                 hover
-                key={key}
+                key={db + fs}
               >
                 <TableCell>
-                  {key}
+                  {db}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["AVAIL"])/1024/1024).toFixed(2) + " GB": ""}
+                  {typeof data[db].listFileSystem[fs] !== 'undefined' ? (parseInt(data[db].listFileSystem[fs]["AVAIL"])/1024/1024).toFixed(2) + " GB": ""}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["FILESYSTEM"] : ""}
+                  {typeof fs !== 'undefined' ? fs : ""}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["SIZE"])/1024/1024).toFixed(2) + " GB" : ""}
+                  {typeof data[db].listFileSystem[fs] !== 'undefined' ? (parseInt(data[db].listFileSystem[fs]["SIZE"])/1024/1024).toFixed(2) + " GB" : ""}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? (parseInt(data[key]["/u01"]["USED"])/1024/1024).toFixed(2) + " GB" : ""}
+                  {typeof data[db].listFileSystem[fs] !== 'undefined' ? (parseInt(data[db].listFileSystem[fs]["USED"])/1024/1024).toFixed(2) + " GB" : ""}
                 </TableCell>
                 <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["URL"] : ""}
-                </TableCell>
-                <TableCell>
-                  {typeof data[key]["/u01"] !== 'undefined' ? data[key]["/u01"]["USE_PORC"] : "0"}
+                  {typeof data[db].listFileSystem[fs] !== 'undefined' ? data[db].listFileSystem[fs]["USE_PORC"] : "0"}
                 </TableCell>
                 {/* <TableCell>
                   <IconButton color="secondary" onClick={() => { 
@@ -116,7 +112,7 @@ const TableUsers = ({ data }) => {
                   </IconButton>
                 </TableCell> */}
               </TableRow>
-            ))}
+            )): <></>))}
           </TableBody>
         </Table>
 
