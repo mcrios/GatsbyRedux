@@ -28,11 +28,9 @@ import { useDispatch } from 'react-redux'
 import * as Yup from 'yup';
 import { Formik } from 'formik'
 import { actualizarUsuario, agregarUsuario, cargarRolesAvail, cargarRolesUsuario, eliminarUsuario } from '../../redux/usuarioReducer'
+import { addParametro, deleteParametro, updateParametro } from '../../redux/paramsReducer';
 
 const useStyles = makeStyles(() => ({
-    tabla: {
-        minWidth: 650
-    },
     headDark: {
         backgroundColor: colors.blueGrey[900],
         color: "white",
@@ -61,14 +59,14 @@ const TableParams = ({ data }) => {
     const [open, setOpen] = useState(false)
     const classes = useStyles()
     const [openAdd, setOpenAdd] = useState(false)
-    const [usuario, setUsuario] = useState()
     const dispatch = useDispatch()
+    const [param, setParam] = useState({})
 
     return (
         <Card >
-            <CardHeader title="Usuarios" className={classes.headDark}
+            <CardHeader title="Parametros" className={classes.headDark}
                 action={
-                    <Tooltip title="Agregar Usuario">
+                    <Tooltip title="Agregar Parametro">
                         <IconButton variant="contained" color="secondary" onClick={() => {
                             setOpenAdd(true)
                         }}>
@@ -84,79 +82,48 @@ const TableParams = ({ data }) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell className={classes.headTable}>
-                                    CODUSR
+                                    ID
                                 </TableCell>
                                 <TableCell className={classes.headTable}>
-                                    NOMBRE
+                                    GRUPO
                                 </TableCell>
                                 <TableCell className={classes.headTable}>
-                                    CORREO
+                                    CODIGO
                                 </TableCell>
                                 <TableCell className={classes.headTable}>
-                                    ESTADO
+                                    VALOR
                                 </TableCell>
                                 <TableCell className={classes.headTable}>
-                                    FECHA VENCIMIENTO
-                                </TableCell>
-                                <TableCell className={classes.headTable}>
-                                    ACTION
+                                    ACCIONES
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {typeof data !== 'undefined' ? data.map((key) => (
+                            {typeof data !== 'undefined' ? data.map((par) => (
                                 <TableRow
-                                    selected={typeof usuario != 'undefined' ? (usuario.idusr === key.idusr) : false}
                                     hover
-                                    key={key.idusr}
+                                    key={[par.idpar]}
                                 >
-                                    <TableCell className={classes.row} onClick={() => {
-                                        dispatch(cargarRolesUsuario(key.idusr))
-                                        setUsuario({ ...usuario, idusr: key.idusr })
-                                        dispatch(cargarRolesAvail(key.idusr))
-                                    }}>
-                                        {key.codusr}
+                                    <TableCell className={classes.row} >
+                                        {par.idpar}
                                     </TableCell>
-                                    <TableCell className={classes.row} onClick={() => {
-                                        dispatch(cargarRolesUsuario(key.idusr))
-                                        setUsuario({ ...usuario, idusr: key.idusr })
-                                        dispatch(cargarRolesAvail(key.idusr))
-                                    }}>
-                                        {key.nombre}
+                                    <TableCell className={classes.row} >
+                                        {par.grupo}
                                     </TableCell>
-                                    <TableCell className={classes.row} onClick={() => {
-                                        dispatch(cargarRolesUsuario(key.idusr))
-                                        setUsuario({ ...usuario, idusr: key.idusr })
-                                        dispatch(cargarRolesAvail(key.idusr))
-                                    }}>
-                                        {key.correo}
+                                    <TableCell className={classes.row} >
+                                        {par.codpar}
                                     </TableCell>
-                                    <TableCell className={classes.row} onClick={() => {
-                                        dispatch(cargarRolesUsuario(key.idusr))
-                                        setUsuario({ ...usuario, idusr: key.idusr })
-                                        dispatch(cargarRolesAvail(key.idusr))
-                                    }}>
-                                        <Chip
-                                            color="primary"
-                                            label={key.estado}
-                                            size="small"
-                                        />
-                                    </TableCell>
-                                    <TableCell className={classes.row} onClick={() => {
-                                        dispatch(cargarRolesUsuario(key.idusr))
-                                        setUsuario({ ...usuario, idusr: key.idusr })
-                                        dispatch(cargarRolesAvail(key.idusr))
-                                    }}>
-                                        {key.fecha_vencimiento}
+                                    <TableCell className={classes.row} >
+                                        {par.valor}
                                     </TableCell>
                                     <TableCell className={classes.row}>
                                         <IconButton color="secondary" onClick={() => {
-                                            dispatch(eliminarUsuario(key.idusr))
+                                            dispatch(deleteParametro({'idpar': par.idpar}))
                                         }}>
                                             <Trash size="15" />
                                         </IconButton>
                                         <IconButton color="secondary" onClick={() => {
-                                            setUsuario(key)
+                                            setParam(par)
                                             setOpen(true)
                                         }}>
                                             <Edit size="15" />
@@ -175,21 +142,19 @@ const TableParams = ({ data }) => {
                     <DialogContent>
                         <Formik
                             initialValues={{
-                                codusr: '',
-                                nombre: '',
-                                correo: '',
-                                clave: ''
+                                grupo: '',
+                                codpar: '',
+                                valor: '',
                             }}
                             validationSchema={
                                 Yup.object().shape({
-                                    nombre: Yup.string().max(255).required('Nombre is required'),
-                                    codusr: Yup.string().max(50).required('Codusr is required'),
-                                    correo: Yup.string().email().max(300).required('Correo is required'),
-                                    clave: Yup.string().max(300).required('Clave is required'),
+                                    grupo: Yup.string().max(50).required('Grupo is required'),
+                                    codpar: Yup.string().max(50).required('Codigo is required'),
+                                    valor: Yup.string().max(250).required('Valor is required'),
                                 })
                             }
                             onSubmit={(values) => {
-                                dispatch(agregarUsuario(values))
+                                dispatch(addParametro(values))
                                 setOpenAdd(false)
                             }}
                         >
@@ -209,57 +174,43 @@ const TableParams = ({ data }) => {
                                             variant="h5"
                                             align="center"
                                         >
-                                            Agregar nuevo Usuario
+                                            Agregar nuevo Parametro
                                         </Typography>
                                     </Box>
                                     <TextField
-                                        error={Boolean(touched.codusr && errors.codusr)}
+                                        error={Boolean(touched.grupo && errors.grupo)}
                                         fullWidth
-                                        helperText={touched.codusr && errors.codusr}
-                                        label="Codusr"
+                                        helperText={touched.grupo && errors.grupo}
+                                        label="Grupo"
                                         margin="normal"
-                                        name="codusr"
+                                        name="grupo"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.codusr}
+                                        value={values.grupo}
                                         variant="outlined"
                                     />
                                     <TextField
-                                        error={Boolean(touched.nombre && errors.nombre)}
+                                        error={Boolean(touched.codpar && errors.codpar)}
                                         fullWidth
-                                        helperText={touched.nombre && errors.nombre}
-                                        label="Nombre"
+                                        helperText={touched.codpar && errors.codpar}
+                                        label="Codigo"
                                         margin="normal"
-                                        name="nombre"
+                                        name="codpar"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.nombre}
+                                        value={values.codpar}
                                         variant="outlined"
                                     />
                                     <TextField
-                                        error={Boolean(touched.correo && errors.correo)}
+                                        error={Boolean(touched.valor && errors.valor)}
                                         fullWidth
-                                        helperText={touched.correo && errors.correo}
-                                        label="Correo"
+                                        helperText={touched.valor && errors.valor}
+                                        label="Valor"
                                         margin="normal"
-                                        name="correo"
-                                        type="email"
+                                        name="valor"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.correo}
-                                        variant="outlined"
-                                    />
-                                    <TextField
-                                        error={Boolean(touched.clave && errors.clave)}
-                                        fullWidth
-                                        helperText={touched.clave && errors.clave}
-                                        label="Clave"
-                                        margin="normal"
-                                        name="clave"
-                                        type="password"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        value={values.clave}
+                                        value={values.valor}
                                         variant="outlined"
                                     />
                                     <Box my={2}>
@@ -290,17 +241,16 @@ const TableParams = ({ data }) => {
                 <Dialog open={open} onClose={() => { setOpen(false) }} aria-labelledby="form-edit-usuario">
                     <DialogContent>
                         <Formik
-                            initialValues={usuario}
+                            initialValues={param}
                             validationSchema={
                                 Yup.object().shape({
-                                    nombre: Yup.string().max(255).required('Nombre is required'),
-                                    codusr: Yup.string().max(50).required('Codusr is required'),
-                                    correo: Yup.string().email().max(300).required('Correo is required'),
-                                    clave: Yup.string().max(300).required('Clave is required'),
+                                    grupo: Yup.string().max(50).required('Grupo is required'),
+                                    codpar: Yup.string().max(50).required('Codigo is required'),
+                                    valor: Yup.string().max(250).required('Valor is required'),
                                 })
                             }
                             onSubmit={(values) => {
-                                dispatch(actualizarUsuario(values))
+                                dispatch(updateParametro(values))
                                 setOpen(false)
                             }}
                         >
@@ -320,57 +270,43 @@ const TableParams = ({ data }) => {
                                             variant="h5"
                                             align="center"
                                         >
-                                            Editar Usuario
+                                            Editar Parametro
                                     </Typography>
                                     </Box>
                                     <TextField
-                                        error={Boolean(touched.codusr && errors.codusr)}
+                                        error={Boolean(touched.grupo && errors.grupo)}
                                         fullWidth
-                                        helperText={touched.codusr && errors.codusr}
-                                        label="Codusr"
+                                        helperText={touched.grupo && errors.grupo}
+                                        label="Grupo"
                                         margin="normal"
-                                        name="codusr"
+                                        name="grupo"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.codusr}
+                                        value={values.grupo}
                                         variant="outlined"
                                     />
                                     <TextField
-                                        error={Boolean(touched.nombre && errors.nombre)}
+                                        error={Boolean(touched.codpar && errors.codpar)}
                                         fullWidth
-                                        helperText={touched.nombre && errors.nombre}
-                                        label="Nombre"
+                                        helperText={touched.codpar && errors.codpar}
+                                        label="Codigo"
                                         margin="normal"
-                                        name="nombre"
+                                        name="codpar"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.nombre}
+                                        value={values.codpar}
                                         variant="outlined"
                                     />
                                     <TextField
-                                        error={Boolean(touched.correo && errors.correo)}
+                                        error={Boolean(touched.valor && errors.valor)}
                                         fullWidth
-                                        helperText={touched.correo && errors.correo}
-                                        label="Correo"
+                                        helperText={touched.valor && errors.valor}
+                                        label="Valor"
                                         margin="normal"
-                                        name="correo"
-                                        type="email"
+                                        name="valor"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        value={values.correo}
-                                        variant="outlined"
-                                    />
-                                    <TextField
-                                        error={Boolean(touched.clave && errors.clave)}
-                                        fullWidth
-                                        helperText={touched.clave && errors.clave}
-                                        label="Clave"
-                                        margin="normal"
-                                        name="clave"
-                                        type="password"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        value={values.clave}
+                                        value={values.valor}
                                         variant="outlined"
                                     />
                                     <Box my={2}>

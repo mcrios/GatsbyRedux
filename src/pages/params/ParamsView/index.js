@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
 import {
-  Button,
   Container,
   Grid,
   makeStyles,
 } from '@material-ui/core'
 import Page from '../../../component/Page'
 import { useDispatch, useSelector } from 'react-redux'
-import { showLoader } from '../../../redux/serverReducer'
 import HashLoader from 'react-spinners/HashLoader'
-import { cargarRoles, cargarUsuarios } from '../../../redux/usuarioReducer'
-import { List, Users } from 'react-feather'
+import { cargarParametros } from '../../../redux/paramsReducer'
+import { showLoader } from '../../../redux/alertReducer'
+import TableParams from '../TableParams'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -23,21 +23,14 @@ const useStyles = makeStyles((theme) => ({
 const Params = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
-  const usuarios = useSelector(store => store.usuario.usuarios)
-  const loading = useSelector((store) => store.usuario.loading)
-
-  const [value, setValue] = React.useState("usuario");
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const params = useSelector((store) => store.parametro.parametros)
+  const loading = useSelector((store) => store.alert.loading)
 
   useEffect(() => {
-    if (typeof usuarios === 'undefined' || usuarios.length <= 0) {
+    if (typeof params === 'undefined' || params.length <= 0) {
       dispatch(showLoader())
     }
-    dispatch(cargarUsuarios())
-    dispatch(cargarRoles())
+    dispatch(cargarParametros())
   }, [])
 
 
@@ -69,16 +62,7 @@ const Params = () => {
               xs={12}
               style={{ textAlign: 'center' }}
             >
-              <Button variant="outlined" color="primary" size="small" onClick={(e) => { handleChange(e, "usuario") }}>
-                <Users size={15} />
-                &nbsp; Usuarios
-              </Button>
-
-              <Button variant="outlined" color="primary" size="small" style={{ marginLeft: '10px' }}
-                onClick={(e) => { handleChange(e, "roles") }}>
-                <List size={15} />
-                &nbsp; Roles
-              </Button>
+              <TableParams data={params} />
             </Grid>
           </Grid>
         </Container>
